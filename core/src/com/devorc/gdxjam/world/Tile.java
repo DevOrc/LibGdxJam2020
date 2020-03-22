@@ -21,13 +21,7 @@ public class Tile {
         this.x = x;
         this.y = y;
 
-        if(random.nextInt(10) == 0){
-            floor = Floor.WATER;
-        }else if(random.nextInt(4) == 0){
-            floor = Floor.GRASS;
-        }else{
-            floor = random.nextBoolean() ? Floor.SAND : Floor.DIRT;
-        }
+        setFloor(Floor.GRASS);
     }
 
     public void render(SpriteBatch batch) {
@@ -39,5 +33,9 @@ public class Tile {
 
     public void setFloor(Floor floor) {
         this.floor = floor;
+    }
+
+    public Floor getFloor() {
+        return floor;
     }
 }
