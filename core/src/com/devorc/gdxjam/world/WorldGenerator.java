@@ -32,17 +32,21 @@ public class WorldGenerator {
         for(int i = 0; i < 200; i++){
             int x = random.nextInt(WORLD_SIZE);
             int y = random.nextInt(WORLD_SIZE);
-            generateFeature(x, y, (int) (15 + (120 * random.nextDouble())), tile -> {
-                tile.setFloor(Floor.ROCK);
-                tile.setBlock(Block.ROCK);
-            });
+            generateFeature(x, y, (int) (15 + (120 * random.nextDouble())), this::setRock);
         }
         surroundFloor(Floor.ROCK, Floor.DIRT);
-        fixPatches(Floor.ROCK, tile -> {
-            tile.setFloor(Floor.ROCK);
-            tile.setBlock(Block.ROCK);
-        });
+        fixPatches(Floor.ROCK, this::setRock);
 
+    }
+
+    private void setRock(Tile tile){
+        tile.setFloor(Floor.ROCK);
+
+        if(random.nextInt(3) == 0){
+            tile.setBlock(Block.RUBY);
+        }else{
+            tile.setBlock(Block.ROCK);
+        }
     }
 
     private void fixPatches(Floor type, Consumer<Tile> consumer){

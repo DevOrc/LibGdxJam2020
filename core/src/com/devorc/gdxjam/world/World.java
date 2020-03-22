@@ -1,5 +1,7 @@
 package com.devorc.gdxjam.world;
 
+import com.badlogic.gdx.Application;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.devorc.gdxjam.Game;
 import com.devorc.gdxjam.Robot;
@@ -17,7 +19,7 @@ public class World {
     public World(Game game) {
         this.game = game;
 
-        robot = new Robot();
+        robot = new Robot(game);
         createTiles();
 
         new WorldGenerator(this).generate();
@@ -38,9 +40,10 @@ public class World {
     public void render(SpriteBatch batch) {
         int playerX = (int) (robot.getX() / Tile.SIZE);
         int playerY = (int) (robot.getY() / Tile.SIZE);
+        int renderArea = Gdx.app.getType() == Application.ApplicationType.WebGL ? 15: 50;
 
-        for(int x = playerX - 50; x < playerX + 50; x++) {
-            for(int y = playerY - 50; y < playerY + 50; y++) {
+        for(int x = playerX - renderArea; x < playerX + renderArea; x++) {
+            for(int y = playerY - renderArea; y < playerY + renderArea; y++) {
                 if(x >= WORLD_SIZE || y >= WORLD_SIZE || x < 0 || y < 0){
                     continue;
                 }

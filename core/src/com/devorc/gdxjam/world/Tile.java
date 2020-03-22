@@ -2,6 +2,7 @@ package com.devorc.gdxjam.world;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import java.util.Objects;
 import java.util.Random;
 
 public class Tile {
@@ -34,6 +35,20 @@ public class Tile {
         if(block != null){
             batch.draw(block.getTexture(), pixelX, pixelY);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(this == o) return true;
+        if(!(o instanceof Tile)) return false;
+        Tile tile = (Tile) o;
+        return x == tile.x &&
+                y == tile.y;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
     }
 
     public void setBlock(Block block) {

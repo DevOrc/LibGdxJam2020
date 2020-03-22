@@ -4,7 +4,8 @@ import com.badlogic.gdx.graphics.Texture;
 
 public enum Block {
 
-    ROCK("rock");
+    ROCK("rock"),
+    RUBY("ruby");
 
     private final Texture texture;
 

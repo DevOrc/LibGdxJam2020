@@ -44,4 +44,8 @@ public class Game extends ApplicationAdapter {
 	public World getWorld() {
 		return world;
 	}
+
+	public GameRenderer getRenderer() {
+		return renderer;
+	}
 }
