@@ -7,12 +7,12 @@ public enum Floor {
     GRASS("grass"),
     WATER("water"),
     DIRT("dirt"),
-    SAND("sand");
+    SAND("sand"),
+    ROCK("rock");
 
     /*
     Future Floor IDeas:
     - Lava
-    - Rock
     - Nuclear Waste
     - Sand
      */

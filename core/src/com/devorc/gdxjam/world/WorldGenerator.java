@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.function.Consumer;
 
 import static com.devorc.gdxjam.world.World.WORLD_SIZE;
 
@@ -18,23 +19,51 @@ public class WorldGenerator {
     }
 
     public void generate() {
-        //ponds
+        //Ponds
         for(int i = 0; i < 100; i++){
             int x = random.nextInt(WORLD_SIZE);
             int y = random.nextInt(WORLD_SIZE);
-            generateFeature(x, y, 5 + (int) (45 * random.nextDouble()), Floor.WATER);
+            generateFeature(x, y, 5 + (int) (45 * random.nextDouble()), tile -> tile.setFloor(Floor.WATER));
         }
+        fixPatches(Floor.WATER, tile -> tile.setFloor(Floor.WATER));
+        surroundFloor(Floor.WATER, Floor.SAND);
 
-        sandAroundPonds();
-
-        for(int i = 0; i < 180; i++){
+        //Rock Areas
+        for(int i = 0; i < 200; i++){
             int x = random.nextInt(WORLD_SIZE);
             int y = random.nextInt(WORLD_SIZE);
-            generateFeature(x, y, 4, Floor.DIRT);
+            generateFeature(x, y, (int) (15 + (120 * random.nextDouble())), tile -> {
+                tile.setFloor(Floor.ROCK);
+                tile.setBlock(Block.ROCK);
+            });
+        }
+        surroundFloor(Floor.ROCK, Floor.DIRT);
+        fixPatches(Floor.ROCK, tile -> {
+            tile.setFloor(Floor.ROCK);
+            tile.setBlock(Block.ROCK);
+        });
+
+    }
+
+    private void fixPatches(Floor type, Consumer<Tile> consumer){
+        for(int x = 1; x < WORLD_SIZE - 1; x++) {
+            for(int y = 1; y < WORLD_SIZE - 1; y++) {
+                Tile tile = world.getTileAt(x, y);
+
+                if(tile.getFloor() != type){
+                    List<Tile> neighbors = getNeighborTiles(x, y);
+
+                    int floorCount = (int) neighbors.stream().filter(t -> t.getFloor() == type).count();
+
+                    if(floorCount == 4){
+                        consumer.accept(tile);
+                    }
+                }
+            }
         }
     }
 
-    private void sandAroundPonds() {
+    private void surroundFloor(Floor main, Floor border) {
         for(int x = 1; x < WORLD_SIZE - 1; x++) {
             for(int y = 1; y < WORLD_SIZE - 1; y++) {
                 Tile tile = world.getTileAt(x, y);
@@ -42,10 +71,10 @@ public class WorldGenerator {
                 if(tile.getFloor() == Floor.GRASS){
                     List<Tile> neighbors = getNeighborTiles(x, y);
 
-                    int waterCount = (int) neighbors.stream().filter(t -> t.getFloor() == Floor.WATER).count();
+                    int floorCount = (int) neighbors.stream().filter(t -> t.getFloor() == main).count();
 
-                    if(waterCount > 0 && waterCount < 3){
-                        tile.setFloor(Floor.SAND);
+                    if(floorCount > 0 && floorCount < 4){
+                        tile.setFloor(border);
                     }
                 }
             }
@@ -61,18 +90,17 @@ public class WorldGenerator {
         return neighbors;
     }
 
-    private void generateFeature(int startX, int startY, int i, Floor floor) {
+    private void generateFeature(int startX, int startY, int i, Consumer<Tile> feature) {
         for(int x = startX - 1; x <= startX + 1; x++){
             for(int y = startY - 1; y <= startY + 1; y++) {
-                if(random.nextInt(3) != 0)
-                    getTileSafe(x, y).ifPresent(tile -> tile.setFloor(floor));
+                getTileSafe(x, y).ifPresent(feature);
             }
         }
 
         if(i > 0){
             startX += random.nextBoolean() ? 1 : -1;
             startY += random.nextBoolean() ? 1 : -1;
-            generateFeature(startX, startY, i  -  1, floor);
+            generateFeature(startX, startY, i  -  1, feature);
         }
     }
 

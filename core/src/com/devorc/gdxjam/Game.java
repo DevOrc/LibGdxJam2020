@@ -3,6 +3,7 @@ package com.devorc.gdxjam;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.devorc.gdxjam.world.Block;
 import com.devorc.gdxjam.world.Floor;
 import com.devorc.gdxjam.world.World;
 
@@ -18,6 +19,7 @@ public class Game extends ApplicationAdapter {
 
 		Robot.loadTexture();
 		Floor.loadTextures();
+		Block.loadTextures();
 	}
 
 	@Override

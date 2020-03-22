@@ -15,6 +15,7 @@ public class Tile {
     private final int y;
 
     private Floor floor;
+    private Block block;
 
     Tile(World world, int x, int y) {
         this.world = world;
@@ -29,6 +30,18 @@ public class Tile {
         int pixelY = y * SIZE;
 
         batch.draw(floor.getTexture(), pixelX, pixelY);
+
+        if(block != null){
+            batch.draw(block.getTexture(), pixelX, pixelY);
+        }
+    }
+
+    public void setBlock(Block block) {
+        this.block = block;
+    }
+
+    public Block getBlock() {
+        return block;
     }
 
     public void setFloor(Floor floor) {
