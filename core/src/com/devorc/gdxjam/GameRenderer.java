@@ -17,12 +17,18 @@ public class GameRenderer {
     }
 
     public void render(){
+        syncCameraToPlayer();
         camera.update();
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
-        game.robot.render(batch);
+        game.getWorld().render(batch);
         batch.end();
+    }
+
+    private void syncCameraToPlayer() {
+        camera.position.x = game.getWorld().getRobot().getX();
+        camera.position.y = game.getWorld().getRobot().getY();
     }
 
     public void onResize(int width, int height){

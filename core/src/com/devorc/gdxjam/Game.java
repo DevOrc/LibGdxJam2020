@@ -3,18 +3,21 @@ package com.devorc.gdxjam;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.devorc.gdxjam.world.Floor;
+import com.devorc.gdxjam.world.World;
 
 public class Game extends ApplicationAdapter {
 
 	private GameRenderer renderer;
-	Robot robot;
+	private World world;
 
 	@Override
 	public void create () {
 		renderer = new GameRenderer(this);
-		robot = new Robot();
+		world = new World(this);
 
 		Robot.loadTexture();
+		Floor.loadTextures();
 	}
 
 	@Override
@@ -23,11 +26,7 @@ public class Game extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		renderer.render();
-		update();
-	}
-
-	private void update() {
-		robot.update();
+		world.update();
 	}
 
 	@Override
@@ -38,5 +37,9 @@ public class Game extends ApplicationAdapter {
 	@Override
 	public void dispose () {
 
+	}
+
+	public World getWorld() {
+		return world;
 	}
 }
