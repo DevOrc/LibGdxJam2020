@@ -4,7 +4,10 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.devorc.gdxjam.Game;
+import com.devorc.gdxjam.Item;
 import com.devorc.gdxjam.Robot;
+
+import java.util.EnumMap;
 
 public class World {
 
@@ -15,6 +18,7 @@ public class World {
     private final Game game;
 
     private final Tile[][] tiles = new Tile[WORLD_SIZE][WORLD_SIZE];
+    private final EnumMap<Item, Integer> inventory = new EnumMap<>(Item.class);
 
     public World(Game game) {
         this.game = game;
@@ -23,6 +27,10 @@ public class World {
         createTiles();
 
         new WorldGenerator(this).generate();
+
+        for(Item item: Item.values()){
+            inventory.put(item, 0);
+        }
     }
 
     private void createTiles() {
@@ -55,11 +63,22 @@ public class World {
         robot.render(batch);
     }
 
+    public void changeItemAmount(Item item, int delta){
+        int val = inventory.getOrDefault(item, 0);
+        val += delta;
+
+        inventory.put(item, val);
+    }
+
     public Tile getTileAt(int x, int y) {
         return tiles[x][y];
     }
 
     public Robot getRobot() {
         return robot;
+    }
+
+    public EnumMap<Item, Integer> getInventory() {
+        return inventory;
     }
 }

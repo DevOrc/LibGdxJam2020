@@ -57,13 +57,23 @@ public class Robot {
             laserTime -= 30 * Gdx.graphics.getDeltaTime();
 
             if(laserTime < 0){
-                miningLocation.setBlock(null);
-                laserTime = laserReset;
+                mineBlock();
             }
         }else{
             laserTime = laserReset;
             runLaser = false;
         }
+    }
+
+    private void mineBlock() {
+        Item item = miningLocation.getBlock().getItem();
+
+        if(item != null){
+            game.getWorld().changeItemAmount(item, 1);
+        }
+
+        miningLocation.setBlock(null);
+        laserTime = laserReset;
     }
 
     private void trimRobotPositionToWorld() {

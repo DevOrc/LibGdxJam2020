@@ -1,13 +1,16 @@
 package com.devorc.gdxjam;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.devorc.gdxjam.ui.InventoryUI;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
 public class GameRenderer {
@@ -16,6 +19,11 @@ public class GameRenderer {
     private final ShapeDrawer shapeDrawer;
     private final OrthographicCamera camera = new OrthographicCamera();
     private final ScreenViewport viewport = new ScreenViewport(camera);
+
+    private final SpriteBatch uiBatch = new SpriteBatch();
+    private final ShapeDrawer uiShapeDrawer;
+    private final ScreenViewport uiViewport = new ScreenViewport();
+
     private final Game game;
 
     public GameRenderer(Game game) {
@@ -28,6 +36,7 @@ public class GameRenderer {
 
         TextureRegion dot = new TextureRegion(new Texture(map));
         shapeDrawer = new ShapeDrawer(batch, dot);
+        uiShapeDrawer = new ShapeDrawer(uiBatch, dot);
     }
 
     public void render() {
@@ -35,6 +44,22 @@ public class GameRenderer {
         camera.update();
         batch.setProjectionMatrix(camera.combined);
 
+        uiViewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        Matrix4 uiMatrix = viewport.getCamera().projection;
+        uiMatrix.setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        uiBatch.setProjectionMatrix(uiMatrix);
+
+        renderGame();
+        renderUI();
+    }
+
+    private void renderUI() {
+        uiBatch.begin();
+        InventoryUI.render(uiBatch, game.getWorld());
+        uiBatch.end();
+    }
+
+    private void renderGame() {
         batch.begin();
         game.getWorld().render(batch);
         batch.end();
@@ -47,6 +72,7 @@ public class GameRenderer {
 
     public void onResize(int width, int height) {
         viewport.update(width, height);
+        uiViewport.update(width, height);
     }
 
     public static void drawRotated(SpriteBatch batch, Texture texture, float x, float y, float degrees) {
@@ -63,5 +89,13 @@ public class GameRenderer {
 
     public ShapeDrawer getShapeDrawer() {
         return shapeDrawer;
+    }
+
+    public SpriteBatch getUiBatch() {
+        return uiBatch;
+    }
+
+    public ShapeDrawer getUiShapeDrawer() {
+        return uiShapeDrawer;
     }
 }
