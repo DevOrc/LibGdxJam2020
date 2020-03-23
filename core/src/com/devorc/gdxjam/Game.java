@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.devorc.gdxjam.entity.Enemy;
+import com.devorc.gdxjam.robot.Robot;
 import com.devorc.gdxjam.ui.Font;
 import com.devorc.gdxjam.world.Block;
 import com.devorc.gdxjam.world.Floor;

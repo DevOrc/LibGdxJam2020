@@ -3,7 +3,7 @@ package com.devorc.gdxjam.ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.devorc.gdxjam.Robot;
+import com.devorc.gdxjam.robot.Robot;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
 public class HealthBar {

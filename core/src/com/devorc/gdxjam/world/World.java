@@ -5,7 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.devorc.gdxjam.Game;
 import com.devorc.gdxjam.Item;
-import com.devorc.gdxjam.Robot;
+import com.devorc.gdxjam.robot.Robot;
 import com.devorc.gdxjam.entity.AncientTurret;
 import com.devorc.gdxjam.entity.Enemy;
 import com.devorc.gdxjam.entity.Entity;

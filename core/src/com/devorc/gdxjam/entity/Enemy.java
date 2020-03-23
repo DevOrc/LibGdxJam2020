@@ -22,6 +22,7 @@ public abstract class Enemy implements Entity {
 
     public static void loadTextures(){
         AncientTurret.texture = new Texture("ancient_turret.png");
+        AncientTurret.turretTexture = new Texture("ancient_turret_top.png");
     }
 
     public void damage(int amount){

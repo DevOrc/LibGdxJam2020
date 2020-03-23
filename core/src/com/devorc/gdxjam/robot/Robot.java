@@ -1,4 +1,4 @@
-package com.devorc.gdxjam;
+package com.devorc.gdxjam.robot;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -7,6 +7,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.devorc.gdxjam.Game;
+import com.devorc.gdxjam.GameRenderer;
+import com.devorc.gdxjam.Item;
 import com.devorc.gdxjam.entity.Bullet;
 import com.devorc.gdxjam.world.Tile;
 import com.devorc.gdxjam.world.World;
@@ -17,6 +20,8 @@ public class Robot {
     private static final int SIZE = 64;
     private static Texture onTexture;
     private static Texture offTexture;
+
+    private static float MAX_VELOCITY = 950f;
 
     private final Game game;
 
@@ -48,6 +53,8 @@ public class Robot {
     public static void loadTexture(){
         onTexture = new Texture("robot_on.png");
         offTexture = new Texture("robot_off.png");
+
+        MiningParticle.loadParticle();
     }
 
     public void damage(int amount) {
@@ -101,6 +108,9 @@ public class Robot {
     }
 
     private void mineBlock() {
+        if(miningLocation.getBlock() == null)
+            return;
+
         Item item = miningLocation.getBlock().getItem();
 
         if(item != null){
@@ -145,17 +155,18 @@ public class Robot {
             velocity += 250 * Gdx.graphics.getDeltaTime();
             accelerating = true;
         }else if(Gdx.input.isKeyPressed(Input.Keys.S)){
-            velocity -= 350 * Gdx.graphics.getDeltaTime();
+            velocity -= 1100 * Gdx.graphics.getDeltaTime();
             accelerating = false;
         }else{
             accelerating = false;
-            velocity -= 250 * Gdx.graphics.getDeltaTime();
+            velocity -= 2 * velocity * Gdx.graphics.getDeltaTime();
         }
 
         if(velocity < 0){
             velocity = 0;
+        }else if(velocity > MAX_VELOCITY){
+            velocity = MAX_VELOCITY;
         }
-
 
         if(Gdx.input.isKeyPressed(Input.Keys.D)){
             angularVelocity += 3 * Gdx.graphics.getDeltaTime();
@@ -175,6 +186,8 @@ public class Robot {
 
         if(runLaser){
             drawLaser(batch);
+        }else{
+            MiningParticle.reset();
         }
     }
 
@@ -187,6 +200,9 @@ public class Robot {
         Vector2 miningLocation = new Vector2(worldCoords.x - x, worldCoords.y - y);
         miningLocation.clamp(0 , 250).add(x, y);
         updateLaserTile(miningLocation);
+
+        MiningParticle.update(miningLocation.x, miningLocation.y);
+        MiningParticle.draw(batch);
 
         sr.setColor(Color.YELLOW);
         sr.setDefaultLineWidth(5);
