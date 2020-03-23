@@ -28,6 +28,6 @@ public class GameOverScreen extends Table {
 
     private void restartGame() {
         Game game = (Game) Gdx.app.getApplicationListener();
-        game.restart();
+        game.startGame();
     }
 }

@@ -6,10 +6,10 @@ import com.kotcrab.vis.ui.widget.VisTextButton;
 
 public class Styles {
 
-    static final Color border = new Color(0x48b3e8ff);
+    public static final Color border = new Color(0x48b3e8ff);
 
-    static Label.LabelStyle title;
-    static VisTextButton.VisTextButtonStyle buttons;
+    public static Label.LabelStyle title;
+    public static VisTextButton.VisTextButtonStyle buttons;
 
     public static void init(){
         title = new Label.LabelStyle(Font.getTitleFont(), Color.WHITE);

@@ -33,7 +33,7 @@ public class Game extends ApplicationAdapter {
 
 		renderer = new GameRenderer(this);
 		ui = new UI(this);
-		world = new World(this);
+		startGame();
 	}
 
 	@Override
@@ -52,7 +52,7 @@ public class Game extends ApplicationAdapter {
 		ui.resize(width, height);
 	}
 
-	public void restart(){
+	public void startGame(){
 		world = new World(this);
 		ui.setScene(UIScenes.IN_GAME);
 	}

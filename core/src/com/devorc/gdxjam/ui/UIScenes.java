@@ -1,12 +1,11 @@
 package com.devorc.gdxjam.ui;
 
-import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 
 public enum UIScenes {
 
     MAIN_MENU(null),
-    IN_GAME(new Container<>()),
+    IN_GAME(new InGameUI()),
     GAME_OVER(new GameOverScreen());
 
     private final WidgetGroup component;

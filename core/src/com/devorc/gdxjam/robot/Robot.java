@@ -23,6 +23,7 @@ public class Robot {
 
     private static float MAX_VELOCITY = 950f;
 
+    private final RobotStats stats = new RobotStats();
     private final Game game;
 
     private float x = World.WORLD_PIXEL_SIZE / 2f;
@@ -36,8 +37,7 @@ public class Robot {
 
     private boolean runLaser;
     private Tile miningLocation;
-    private double laserReset = 100;
-    private double laserTime = laserReset;
+    private double laserTime;
 
     private int maxHealth = 125;
     private int health = maxHealth;
@@ -48,7 +48,6 @@ public class Robot {
     public Robot(Game game) {
         this.game = game;
     }
-
 
     public static void loadTexture(){
         onTexture = new Texture("robot_on.png");
@@ -102,7 +101,7 @@ public class Robot {
                 mineBlock();
             }
         }else{
-            laserTime = laserReset;
+            laserTime = stats.laserLevel.getValue().doubleValue();
             runLaser = false;
         }
     }
@@ -118,7 +117,7 @@ public class Robot {
         }
 
         miningLocation.setBlock(null);
-        laserTime = laserReset;
+        laserTime = stats.laserLevel.getValue().doubleValue();
     }
 
     private void trimRobotPositionToWorld() {
@@ -219,7 +218,7 @@ public class Robot {
         Tile miningTile = world.getTileAt(tileX, tileY);
 
         if(!miningTile.equals(miningLocation)){
-            laserTime = laserReset;
+            laserTime = stats.laserLevel.getValue().doubleValue();
         }
 
         miningLocation = miningTile;
@@ -247,5 +246,9 @@ public class Robot {
 
     public float getRadius() {
         return onTexture.getWidth() / 2f;
+    }
+
+    public RobotStats getStats() {
+        return stats;
     }
 }
