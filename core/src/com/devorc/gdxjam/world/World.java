@@ -2,6 +2,7 @@ package com.devorc.gdxjam.world;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.devorc.gdxjam.Game;
 import com.devorc.gdxjam.Item;
@@ -9,6 +10,7 @@ import com.devorc.gdxjam.robot.Robot;
 import com.devorc.gdxjam.entity.AncientTurret;
 import com.devorc.gdxjam.entity.Enemy;
 import com.devorc.gdxjam.entity.Entity;
+import com.devorc.gdxjam.ui.UIScenes;
 
 import java.util.EnumMap;
 import java.util.LinkedList;
@@ -27,6 +29,8 @@ public class World {
 
     private final List<Entity> entities = new LinkedList<>();
     private final List<Enemy> enemies = new LinkedList<>();
+
+    private boolean gameOver = false;
 
     public World(Game game) {
         this.game = game;
@@ -61,16 +65,23 @@ public class World {
     }
 
     public void update() {
+        if(gameOver)
+            return;
+
         entities.forEach(Entity::update);
         entities.removeIf(Entity::isDead);
         enemies.removeIf(Enemy::isDead);
 
         robot.update();
 
-        if(robot.isDead()){
-            System.out.println("You lost");
-            Gdx.app.exit();
+        if(robot.isDead() || Gdx.input.isKeyPressed(Input.Keys.K)){
+            endGame();
         }
+    }
+
+    private void endGame() {
+        gameOver = true;
+        game.getUI().setScene(UIScenes.GAME_OVER);
     }
 
     public void render(SpriteBatch batch) {
@@ -117,5 +128,9 @@ public class World {
 
     public EnumMap<Item, Integer> getInventory() {
         return inventory;
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
     }
 }

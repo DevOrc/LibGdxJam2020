@@ -9,9 +9,13 @@ import com.badlogic.gdx.utils.Align;
 public class Font {
 
     private static BitmapFont font;
+    private static BitmapFont titleFont;
+    private static BitmapFont buttonFont;
 
     public static void loadFont(){
         font = new BitmapFont(Gdx.files.internal("ui.fnt"));
+        titleFont = new BitmapFont(Gdx.files.internal("title.fnt"));
+        buttonFont = new BitmapFont(Gdx.files.internal("button.fnt"));
     }
 
     public static void setData(Color color, float size){
@@ -25,5 +29,17 @@ public class Font {
 
     public static void drawCenter(float x, float y, float width, String text, SpriteBatch batch) {
         font.draw(batch, text, x, y, width, Align.center, false);
+    }
+
+    public static BitmapFont getFont() {
+        return font;
+    }
+
+    public static BitmapFont getTitleFont() {
+        return titleFont;
+    }
+
+    public static BitmapFont getButtonFont() {
+        return buttonFont;
     }
 }

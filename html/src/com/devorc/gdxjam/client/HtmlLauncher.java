@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
 import com.devorc.gdxjam.Game;
+import com.google.gwt.user.client.Window;
 
 public class HtmlLauncher extends GwtApplication {
 
@@ -47,5 +48,11 @@ public class HtmlLauncher extends GwtApplication {
         @Override
         public ApplicationListener createApplicationListener () {
                 return new Game();
+        }
+
+        @Override
+        public void exit() {
+                Window.alert("To quit, you must close the tab!");
+                super.exit();
         }
 }

@@ -51,7 +51,12 @@ public class GameRenderer {
         uiBatch.setProjectionMatrix(uiMatrix);
 
         renderGame();
-        renderUI();
+
+        if(game.getWorld().isGameOver()){
+            drawShade();
+        }else{
+            renderUI();
+        }
     }
 
     private void renderUI() {
@@ -59,6 +64,19 @@ public class GameRenderer {
         InventoryUI.render(uiBatch, game.getWorld());
         HealthBar.render(uiBatch, uiShapeDrawer, game.getWorld().getRobot());
         uiBatch.end();
+    }
+
+    private void drawShade() {
+        boolean originallyBlending = uiBatch.isBlendingEnabled();
+        uiBatch.enableBlending();
+        uiBatch.begin();
+        uiShapeDrawer.setColor(0f, 0f, 0f, .6f);
+        uiShapeDrawer.filledRectangle(0 ,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        uiBatch.end();
+
+        if(!originallyBlending){
+            uiBatch.disableBlending();
+        }
     }
 
     private void renderGame() {
