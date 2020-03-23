@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.devorc.gdxjam.entity.Bullet;
 import com.devorc.gdxjam.world.Tile;
 import com.devorc.gdxjam.world.World;
 import space.earlygrey.shapedrawer.ShapeDrawer;
@@ -33,6 +34,12 @@ public class Robot {
     private double laserReset = 100;
     private double laserTime = laserReset;
 
+    private int maxHealth = 125;
+    private int health = maxHealth;
+
+    private int shooterTime = 15;
+    private int shooterTick = 0;
+
     public Robot(Game game) {
         this.game = game;
     }
@@ -43,12 +50,40 @@ public class Robot {
         offTexture = new Texture("robot_off.png");
     }
 
+    public void damage(int amount) {
+        health -= amount;
+    }
+
     public void update() {
         updateControls();
         updatePositionVelocity();
+
+        updateShooter();
         runLaser();
 
         trimRobotPositionToWorld();
+    }
+
+    private void updateShooter() {
+        shooterTick++;
+
+        if(Gdx.input.isButtonPressed(Input.Buttons.LEFT) && shooterTick >= shooterTime){
+            fireBullet();
+            shooterTick = 0;
+        }
+
+        if(shooterTick > shooterTime){
+            shooterTick = shooterTime;
+        }
+    }
+
+    private void fireBullet() {
+        float offset = getRadius() + 20;
+        float x = (float) (this.x + (offset * Math.cos(angle)));
+        float y = (float) (this.y + (offset * Math.sin(angle)));
+        Bullet bullet = new Bullet(x, y, angle, 1500 + velocity);
+
+        game.getWorld().addEntity(bullet);
     }
 
     private void runLaser() {
@@ -174,6 +209,9 @@ public class Robot {
         miningLocation = miningTile;
     }
 
+    public boolean isDead(){
+        return health <= 0;
+    }
 
     public float getX() {
         return x;
@@ -181,5 +219,17 @@ public class Robot {
 
     public float getY() {
         return y;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
+    public float getRadius() {
+        return onTexture.getWidth() / 2f;
     }
 }

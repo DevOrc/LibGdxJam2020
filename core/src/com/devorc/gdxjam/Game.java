@@ -3,6 +3,7 @@ package com.devorc.gdxjam;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.devorc.gdxjam.entity.Enemy;
 import com.devorc.gdxjam.ui.Font;
 import com.devorc.gdxjam.world.Block;
 import com.devorc.gdxjam.world.Floor;
@@ -20,6 +21,7 @@ public class Game extends ApplicationAdapter {
 
 		Font.loadFont();
 		Robot.loadTexture();
+		Enemy.loadTextures();
 		Floor.loadTextures();
 		Block.loadTextures();
 		Item.loadTextures();

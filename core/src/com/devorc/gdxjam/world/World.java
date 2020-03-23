@@ -6,8 +6,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.devorc.gdxjam.Game;
 import com.devorc.gdxjam.Item;
 import com.devorc.gdxjam.Robot;
+import com.devorc.gdxjam.entity.AncientTurret;
+import com.devorc.gdxjam.entity.Enemy;
+import com.devorc.gdxjam.entity.Entity;
 
 import java.util.EnumMap;
+import java.util.LinkedList;
+import java.util.List;
 
 public class World {
 
@@ -20,6 +25,9 @@ public class World {
     private final Tile[][] tiles = new Tile[WORLD_SIZE][WORLD_SIZE];
     private final EnumMap<Item, Integer> inventory = new EnumMap<>(Item.class);
 
+    private final List<Entity> entities = new LinkedList<>();
+    private final List<Enemy> enemies = new LinkedList<>();
+
     public World(Game game) {
         this.game = game;
 
@@ -30,6 +38,17 @@ public class World {
 
         for(Item item: Item.values()){
             inventory.put(item, 0);
+        }
+
+        addEntity(new AncientTurret());
+    }
+
+    public void addEntity(Entity entity){
+        entity.setWorld(this);
+        entities.add(entity);
+
+        if(entity instanceof Enemy){
+            enemies.add((Enemy) entity);
         }
     }
 
@@ -42,7 +61,16 @@ public class World {
     }
 
     public void update() {
+        entities.forEach(Entity::update);
+        entities.removeIf(Entity::isDead);
+        enemies.removeIf(Enemy::isDead);
+
         robot.update();
+
+        if(robot.isDead()){
+            System.out.println("You lost");
+            Gdx.app.exit();
+        }
     }
 
     public void render(SpriteBatch batch) {
@@ -60,6 +88,7 @@ public class World {
             }
         }
 
+        entities.forEach(e -> e.render(batch));
         robot.render(batch);
     }
 
@@ -76,6 +105,14 @@ public class World {
 
     public Robot getRobot() {
         return robot;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public List<Enemy> getEnemies() {
+        return enemies;
     }
 
     public EnumMap<Item, Integer> getInventory() {

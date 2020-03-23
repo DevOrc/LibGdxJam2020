@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Align;
 
 public class Font {
 
@@ -20,5 +21,9 @@ public class Font {
 
     public static void render(String text, int x, int y, SpriteBatch batch){
         font.draw(batch, text, x, y);
+    }
+
+    public static void drawCenter(float x, float y, float width, String text, SpriteBatch batch) {
+        font.draw(batch, text, x, y, width, Align.center, false);
     }
 }
