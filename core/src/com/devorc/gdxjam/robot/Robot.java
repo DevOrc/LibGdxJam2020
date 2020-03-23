@@ -87,7 +87,7 @@ public class Robot {
         float offset = getRadius() + 20;
         float x = (float) (this.x + (offset * Math.cos(angle)));
         float y = (float) (this.y + (offset * Math.sin(angle)));
-        Bullet bullet = new Bullet(x, y, angle, 1500 + velocity);
+        Bullet bullet = new Bullet(x, y, angle, 1500 + velocity, 5);
 
         game.getWorld().addEntity(bullet);
     }

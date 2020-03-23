@@ -6,10 +6,11 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.devorc.gdxjam.Game;
 import com.devorc.gdxjam.Item;
-import com.devorc.gdxjam.robot.Robot;
-import com.devorc.gdxjam.entity.AncientTurret;
+import com.devorc.gdxjam.entity.Bomber;
 import com.devorc.gdxjam.entity.Enemy;
 import com.devorc.gdxjam.entity.Entity;
+import com.devorc.gdxjam.entity.Explosion;
+import com.devorc.gdxjam.robot.Robot;
 import com.devorc.gdxjam.ui.UIScenes;
 
 import java.util.EnumMap;
@@ -44,7 +45,7 @@ public class World {
             inventory.put(item, 0);
         }
 
-        addEntity(new AncientTurret());
+        addEntity(new Bomber());
     }
 
     public void addEntity(Entity entity){
@@ -99,8 +100,15 @@ public class World {
             }
         }
 
-        entities.forEach(e -> e.render(batch));
+        for(Entity e: entities){
+            if(!(e instanceof Explosion))
+                e.render(batch);
+        }
         robot.render(batch);
+        for(Entity e: entities){
+            if(e instanceof Explosion)
+                e.render(batch);
+        }
     }
 
     public void changeItemAmount(Item item, int delta){

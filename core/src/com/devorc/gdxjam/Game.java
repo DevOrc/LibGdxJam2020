@@ -24,6 +24,7 @@ public class Game extends ApplicationAdapter {
 	public void create () {
 		VisUI.load();
 		Font.loadFont();
+		Sounds.load();
 		Robot.loadTexture();
 		Enemy.loadTextures();
 		Floor.loadTextures();

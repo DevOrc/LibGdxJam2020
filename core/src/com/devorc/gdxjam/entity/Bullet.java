@@ -11,22 +11,24 @@ import space.earlygrey.shapedrawer.ShapeDrawer;
 
 public class Bullet implements Entity {
 
-    static final int RADIUS = 4;
-    static final int DAMAGE = 5;
-
     private World world;
     private boolean dead = false;
 
     private final float velocity;
+    private final int damage;
+    private final int radius;
+
     private float x;
     private float y;
     private float angle;
 
-    public Bullet(float x, float y, float angle, float velocity) {
+    public Bullet(float x, float y, float angle, float velocity, int damage) {
         this.x = x;
         this.y = y;
         this.angle = angle;
         this.velocity = velocity;
+        this.damage = damage;
+        this.radius = 5 + (damage / 4);
     }
 
     @Override
@@ -37,7 +39,7 @@ public class Bullet implements Entity {
 
         ShapeDrawer drawer = world.getGame().getRenderer().getShapeDrawer();
         drawer.setColor(Color.FIREBRICK);
-        drawer.filledCircle(x, y, RADIUS);
+        drawer.filledCircle(x, y, radius);
     }
 
     @Override
@@ -59,7 +61,7 @@ public class Bullet implements Entity {
 
             if(collided(enemy.getX(), enemy.getY(), enemy.getRadius())){
                 dead = true;
-                enemy.damage(DAMAGE);
+                enemy.damage(damage);
                 return;
             }
         }
@@ -67,13 +69,13 @@ public class Bullet implements Entity {
         Robot robot = world.getRobot();
 
         if(collided(robot.getX(), robot.getY(), robot.getRadius())){
-            robot.damage(DAMAGE);
+            robot.damage(damage);
             dead = true;
         }
     }
 
     private boolean collided(float x, float y, float radius) {
-        radius += RADIUS;
+        radius += this.radius;
         return new Vector2(x, y).sub(this.x, this.y).len2() < (radius * radius);
     }
 

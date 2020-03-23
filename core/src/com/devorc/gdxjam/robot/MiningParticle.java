@@ -16,9 +16,9 @@ public class MiningParticle {
         if(isHTML)
             return;
 
-        Texture texture = new Texture("mining_particle.png");
+        Texture texture = new Texture("particle.png");
         TextureAtlas atlas = new TextureAtlas();
-        atlas.addRegion("mining_particle", texture, 0, 0, 32, 32);
+        atlas.addRegion("particle", texture, 0, 0, 32, 32);
         effect.load(Gdx.files.internal("mining_particle"), atlas);
     }
 

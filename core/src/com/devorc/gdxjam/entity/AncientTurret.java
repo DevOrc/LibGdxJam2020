@@ -10,9 +10,9 @@ import com.devorc.gdxjam.world.World;
 
 public class AncientTurret extends Enemy{
 
-    private static final int RANGE_SQUARED = 200 * 200;
-    private static final int RESET_TIME = 120;
-    private static final int HEALTH = 25;
+    private static final int RANGE_SQUARED = 500 * 500;
+    private static final int RESET_TIME = 80;
+    private static final int HEALTH = 15;
 
     static Texture texture;
     static Texture turretTexture;
@@ -40,25 +40,17 @@ public class AncientTurret extends Enemy{
         }else if(robotDistance >= RANGE_SQUARED){
             turretAngle += .01f;
         }else{
-            Robot robot = world.getRobot();
-            Vector2 turretPos = new Vector2(x, y);
-            Vector2 robotPos = new Vector2(robot.getX(), robot.getY());
-
-            turretAngle = robotPos.sub(turretPos).angleRad();
+            turretAngle = getAngleToRobot();
         }
     }
 
     private void fireAtRobot() {
-        Robot robot = world.getRobot();
-        Vector2 turretPos = new Vector2(x, y);
-        Vector2 robotPos = new Vector2(robot.getX(), robot.getY());
-
-        turretAngle = robotPos.sub(turretPos).angleRad();
+        turretAngle =  getAngleToRobot();
         float bulletOffset = getRadius() + 20;
         float x = (float) (this.x + (bulletOffset * Math.cos(turretAngle)));
         float y = (float) (this.y + (bulletOffset * Math.sin(turretAngle)));
 
-        Gdx.app.postRunnable(() -> world.addEntity(new Bullet(x, y, turretAngle, 1500)));
+        Gdx.app.postRunnable(() -> world.addEntity(new Bullet(x, y, turretAngle, 800, 10)));
         turretTick = 0;
     }
 
