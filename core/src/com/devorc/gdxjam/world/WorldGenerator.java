@@ -23,10 +23,10 @@ public class WorldGenerator {
         for(int i = 0; i < 100; i++){
             int x = random.nextInt(WORLD_SIZE);
             int y = random.nextInt(WORLD_SIZE);
-            generateFeature(x, y, 5 + (int) (45 * random.nextDouble()), tile -> tile.setFloor(Floor.WATER));
+            generateFeature(x, y, 5 + (int) (45 * random.nextDouble()), this::setOil);
         }
-        fixPatches(Floor.WATER, tile -> tile.setFloor(Floor.WATER));
-        surroundFloor(Floor.WATER, Floor.SAND);
+        fixPatches(Floor.OIL_ROCK, this::setOil);
+        surroundFloor(Floor.OIL_ROCK, Floor.SAND);
 
         //Rock Areas
         for(int i = 0; i < 200; i++){
@@ -37,6 +37,11 @@ public class WorldGenerator {
         surroundFloor(Floor.ROCK, Floor.DIRT);
         fixPatches(Floor.ROCK, this::setRock);
 
+    }
+
+    private void setOil(Tile tile){
+        tile.setFloor(Floor.OIL_ROCK);
+        tile.setBlock(Block.OIL);
     }
 
     private void setRock(Tile tile){

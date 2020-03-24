@@ -5,9 +5,9 @@ import com.badlogic.gdx.graphics.Texture;
 public enum Floor {
 
     GRASS("grass"),
-    WATER("water"),
     DIRT("dirt"),
     SAND("sand"),
+    OIL_ROCK("oil_rock"),
     ROCK("rock");
 
     /*

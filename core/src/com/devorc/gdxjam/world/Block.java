@@ -6,7 +6,8 @@ import com.devorc.gdxjam.Item;
 public enum Block {
 
     ROCK("rock", Item.ROCK),
-    RUBY("ruby", Item.RUBY);
+    RUBY("ruby", Item.RUBY),
+    OIL("oil", null);
 
     private final Texture texture;
     private final Item item;

@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.devorc.gdxjam.ui.HealthBar;
+import com.devorc.gdxjam.ui.HealthBars;
 import com.devorc.gdxjam.ui.InventoryUI;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
@@ -62,7 +62,7 @@ public class GameRenderer {
     private void renderUI() {
         uiBatch.begin();
         InventoryUI.render(uiBatch, game.getWorld());
-        HealthBar.render(uiBatch, uiShapeDrawer, game.getWorld().getRobot());
+        HealthBars.render(uiBatch, uiShapeDrawer, game.getWorld().getRobot());
         uiBatch.end();
     }
 

@@ -11,6 +11,7 @@ import com.devorc.gdxjam.Game;
 import com.devorc.gdxjam.GameRenderer;
 import com.devorc.gdxjam.Item;
 import com.devorc.gdxjam.entity.Bullet;
+import com.devorc.gdxjam.world.Block;
 import com.devorc.gdxjam.world.Tile;
 import com.devorc.gdxjam.world.World;
 import space.earlygrey.shapedrawer.ShapeDrawer;
@@ -42,6 +43,9 @@ public class Robot {
     private int maxHealth = 125;
     private int health = maxHealth;
 
+    private float maxOil = 500;
+    private float oilLevel = maxOil;
+
     private int shooterTime = 15;
     private int shooterTick = 0;
 
@@ -67,7 +71,34 @@ public class Robot {
         updateShooter();
         runLaser();
 
+        updateOil();
+        updateHealth();
         trimRobotPositionToWorld();
+    }
+
+    private void updateHealth() {
+        if(health < maxHealth){
+            health++;
+            oilLevel -= 4;
+        }
+    }
+
+    private void updateOil() {
+        if(accelerating){
+            oilLevel -=  Gdx.graphics.getDeltaTime();
+        }
+
+        if(runLaser){
+            oilLevel -= .25 * Gdx.graphics.getDeltaTime();
+        }
+
+        oilLevel -= .1 * Gdx.graphics.getDeltaTime();
+
+        if(oilLevel < 0){
+            oilLevel = 0;
+        }else if(oilLevel > maxOil){
+            oilLevel = maxOil;
+        }
     }
 
     private void updateShooter() {
@@ -109,6 +140,13 @@ public class Robot {
     private void mineBlock() {
         if(miningLocation.getBlock() == null)
             return;
+
+
+        if(miningLocation.getBlock() == Block.OIL){
+            oilLevel += 150;
+            miningLocation.setBlock(null);
+            return;
+        }
 
         Item item = miningLocation.getBlock().getItem();
 
@@ -225,7 +263,7 @@ public class Robot {
     }
 
     public boolean isDead(){
-        return health <= 0;
+        return health <= 0 || oilLevel <= 0;
     }
 
     public float getX() {
@@ -246,6 +284,14 @@ public class Robot {
 
     public float getRadius() {
         return onTexture.getWidth() / 2f;
+    }
+
+    public float getOilLevel() {
+        return oilLevel;
+    }
+
+    public float getMaxOil() {
+        return maxOil;
     }
 
     public RobotStats getStats() {
