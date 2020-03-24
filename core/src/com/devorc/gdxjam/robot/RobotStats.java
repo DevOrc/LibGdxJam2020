@@ -8,24 +8,28 @@ import java.util.function.Function;
 
 public class RobotStats {
 
-    final RobotStat laserLevel =
-            new RobotStat("Mining Laser", Item.RUBY, 1, this::calcLaserTime, exponentialCost(4));
-    final RobotStat shields =
-            new RobotStat("Shield", Item.PCB, 0, this::calcShieldStrength, l -> 0);
+    final RobotStat laserLevel = new RobotStat("Mining Laser", Item.RUBY, 1,
+            this::calcLaserTime, exponentialCost(2, 4));
+    final RobotStat shields = new RobotStat("Shield", Item.SAPPHIRE, 0,
+            this::calcShieldStrength, exponentialCost(2, 4));
+    final RobotStat turret = new RobotStat("Turret", Item.PCB, 1,
+            this::calcTurretTime, exponentialCost(3, 4));
 
-    final RobotStat engines =
-            new RobotStat("TBD", Item.ROCK, 0, this::linear, this::linear);
 
-    private final List<RobotStat> stats = Arrays.asList(laserLevel, engines, shields);
+    private final List<RobotStat> stats = Arrays.asList(laserLevel, turret, shields);
 
-    private Function<Integer, Integer> exponentialCost(int max){
+    private Function<Integer, Integer> exponentialCost(int base, int max){
         return level -> {
             if(level > max){
                 return Integer.MAX_VALUE;
             }
 
-            return 2 * (int) Math.pow(2, level);
+            return 2 * (int) Math.pow(base, level);
         };
+    }
+
+    private int calcTurretTime(int level) {
+        return 18 - (3 * level);
     }
 
     private int calcLaserTime(int level){

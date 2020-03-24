@@ -49,6 +49,8 @@ public class WorldGenerator {
 
         if(random.nextInt(3) == 0){
             tile.setBlock(Block.RUBY);
+        }else if(random.nextInt(18) == 0){
+            tile.setBlock(Block.SAPPHIRE);
         }else{
             tile.setBlock(Block.ROCK);
         }

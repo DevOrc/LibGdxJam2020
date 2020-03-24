@@ -16,6 +16,8 @@ import com.devorc.gdxjam.world.Tile;
 import com.devorc.gdxjam.world.World;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
+import java.util.Random;
+
 public class Robot {
 
     private static final int SIZE = 64;
@@ -46,7 +48,6 @@ public class Robot {
     private float maxOil = 500;
     private float oilLevel = maxOil;
 
-    private int shooterTime = 15;
     private int shooterTick = 0;
 
     private int shieldStrength;
@@ -92,6 +93,10 @@ public class Robot {
 
         for(int tileX = robotX - 2; tileX <= robotX + 2; tileX++){
             for(int tileY = robotY - 2; tileY <= robotY + 2; tileY++){
+                if(tileX < 0 || tileY < 0 || tileX >= World.WORLD_SIZE || tileY >= World.WORLD_SIZE){
+                    continue;
+                }
+
                 Block block = game.getWorld().getTileAt(tileX, tileY).getBlock();
                 if(block == null || block == Block.OIL)
                     continue;
@@ -142,17 +147,28 @@ public class Robot {
     private void updateShooter() {
         shooterTick++;
 
-        if(Gdx.input.isButtonPressed(Input.Buttons.LEFT) && shooterTick >= shooterTime){
-            fireBullet();
-            shooterTick = 0;
+        if(Gdx.input.isButtonPressed(Input.Buttons.LEFT) && shooterTick >= stats.turret.getValue().intValue()){
+            shoot();
         }
 
-        if(shooterTick > shooterTime){
-            shooterTick = shooterTime;
+        if(shooterTick > stats.turret.getValue().intValue()){
+            shooterTick = stats.turret.getValue().intValue();
         }
     }
 
-    private void fireBullet() {
+    private void shoot() {
+        Random random = new Random();
+        fireBullet(angle);
+
+        for(int i = 1; i < stats.turret.getLevel(); i++){
+            fireBullet(angle + (i / 10f));
+            fireBullet(angle - (i / 10f));
+        }
+
+        shooterTick = 0;
+    }
+
+    private void fireBullet(float angle) {
         float offset = (onTexture.getWidth() / 2f) + 10;
         float x = (float) (this.x + (offset * Math.cos(angle)));
         float y = (float) (this.y + (offset * Math.sin(angle)));

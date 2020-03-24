@@ -33,6 +33,7 @@ public abstract class Enemy implements Entity {
         AncientTurret.texture = new Texture("ancient_turret.png");
         AncientTurret.turretTexture = new Texture("ancient_turret_top.png");
         Bomber.texture = new Texture("bomber.png");
+        Mothership.texture = new Texture("mothership.png");
 
         Explosion.loadEffect();
     }

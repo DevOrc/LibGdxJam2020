@@ -7,6 +7,7 @@ public enum Block {
 
     ROCK("rock", Item.ROCK),
     RUBY("ruby", Item.RUBY),
+    SAPPHIRE("sapphire", Item.SAPPHIRE),
     OIL("oil", null);
 
     private final Texture texture;

@@ -12,7 +12,7 @@ public class Bomber extends Enemy {
 
     private static final int RADIUS = 12;
     private static final int DAMAGE = 25;
-    private static final float VELOCITY = 200f;
+    private static final float VELOCITY = 600;
 
     static Texture texture;
 
