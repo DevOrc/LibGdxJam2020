@@ -18,6 +18,7 @@ public class Bullet implements Entity {
     private final float velocity;
     private final int damage;
     private final int radius;
+    private boolean ignoreRobot = false;
 
     private float x;
     private float y;
@@ -67,6 +68,11 @@ public class Bullet implements Entity {
             }
         }
 
+        if(!ignoreRobot)
+            checkRobotCollision();
+    }
+
+    private void checkRobotCollision() {
         Robot robot = world.getRobot();
 
         if(collided(robot.getX(), robot.getY(), robot.getRadius())){
@@ -105,5 +111,9 @@ public class Bullet implements Entity {
     @Override
     public void setWorld(World world) {
         this.world = world;
+    }
+
+    public void setIgnoreRobot(boolean ignoreRobot) {
+        this.ignoreRobot = ignoreRobot;
     }
 }

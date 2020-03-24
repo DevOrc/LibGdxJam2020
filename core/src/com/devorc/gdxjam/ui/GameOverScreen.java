@@ -17,13 +17,21 @@ public class GameOverScreen extends Table {
 
         TextButton restartButton = new VisTextButton("Restart", Styles.buttons);
         UI.addClickListener(restartButton, event -> restartGame());
-        TextButton quitButton = new VisTextButton("Quit", Styles.buttons);
+        TextButton mainMenuButton = new VisTextButton("Main Menu", Styles.buttons);
+        UI.addClickListener(mainMenuButton, event -> gotoMainMenu());
+        TextButton quitButton = new VisTextButton("Quit!", Styles.buttons);
         UI.addClickListener(quitButton, event -> Gdx.app.exit());
 
         add(label).padTop(100).row();
         add().grow().row();
         add(restartButton).center().size(300, 50).growX().padBottom(20).row();
+        add(mainMenuButton).center().size(300, 50).growX().padBottom(20).row();
         add(quitButton).center().size(300, 50).growX().padBottom(100);
+    }
+
+    private void gotoMainMenu() {
+        Game game = (Game) Gdx.app.getApplicationListener();
+        game.getUI().setScene(UIScenes.MAIN_MENU);
     }
 
     private void restartGame() {

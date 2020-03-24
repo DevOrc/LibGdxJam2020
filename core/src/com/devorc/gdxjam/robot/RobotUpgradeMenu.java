@@ -8,6 +8,7 @@ import com.devorc.gdxjam.Item;
 import com.devorc.gdxjam.ui.ColorDrawable;
 import com.devorc.gdxjam.ui.Styles;
 import com.devorc.gdxjam.ui.UI;
+import com.devorc.gdxjam.world.World;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 
@@ -16,6 +17,7 @@ import java.util.Map;
 public class RobotUpgradeMenu extends Table {
 
     private final Game game;
+    private World prevWorld;
 
     public RobotUpgradeMenu() {
         super(VisUI.getSkin());
@@ -29,6 +31,11 @@ public class RobotUpgradeMenu extends Table {
     public void act(float delta) {
         super.act(delta);
 
+        if(prevWorld != game.getWorld()){
+            updateMenu();
+            prevWorld = game.getWorld();
+        }
+
         this.setX(-2);
         this.setY(-2);
 
@@ -40,6 +47,9 @@ public class RobotUpgradeMenu extends Table {
     }
 
     private void updateMenu() {
+        if(game.getWorld() == null)
+            return;
+
         RobotStats stats = game.getWorld().getRobot().getStats();
 
         clear();

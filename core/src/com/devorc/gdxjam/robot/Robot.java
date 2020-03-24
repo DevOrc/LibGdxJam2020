@@ -40,7 +40,7 @@ public class Robot {
     private Tile miningLocation;
     private double laserTime;
 
-    private int maxHealth = 50000;
+    private int maxHealth = 500;
     private int health = maxHealth;
 
     private float maxOil = 500;
@@ -121,7 +121,6 @@ public class Robot {
         }
     }
 
-
     private void updateOil() {
         if(accelerating){
             oilLevel -=  Gdx.graphics.getDeltaTime();
@@ -154,10 +153,11 @@ public class Robot {
     }
 
     private void fireBullet() {
-        float offset = getRadius() + 20;
+        float offset = (onTexture.getWidth() / 2f) + 10;
         float x = (float) (this.x + (offset * Math.cos(angle)));
         float y = (float) (this.y + (offset * Math.sin(angle)));
         Bullet bullet = new Bullet(x, y, angle, 1500 + velocity, 5);
+        bullet.setIgnoreRobot(true);
 
         game.getWorld().addEntity(bullet);
     }

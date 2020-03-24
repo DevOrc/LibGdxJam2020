@@ -20,6 +20,8 @@ public class UI {
         this.game = game;
 
         Gdx.input.setInputProcessor(stage);
+
+        setScene(UIScenes.MAIN_MENU);
     }
 
     public void resize(int width, int height){

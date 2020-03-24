@@ -27,7 +27,7 @@ public class Bomber extends Enemy {
 
     @Override
     public void update() {
-        renderAngle += Gdx.graphics.getDeltaTime() * 40;
+        renderAngle += Gdx.graphics.getDeltaTime() * 120;
         float angle = getAngleToRobot();
 
         x += VELOCITY * Gdx.graphics.getDeltaTime() * Math.cos(angle);

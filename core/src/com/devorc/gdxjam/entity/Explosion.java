@@ -33,7 +33,7 @@ public class Explosion implements Entity {
     }
 
     public Explosion(float x, float y) {
-        this(x, y, .25f);
+        this(x, y, .5f);
     }
 
     public static void loadEffect(){

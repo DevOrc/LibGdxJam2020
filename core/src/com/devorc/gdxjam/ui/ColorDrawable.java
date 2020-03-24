@@ -31,6 +31,10 @@ public class ColorDrawable extends BaseDrawable {
         this.border = border;
     }
 
+    public ColorDrawable(Color color) {
+        this(color, color);
+    }
+
     public static void init(){}
 
     @Override

@@ -4,7 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 
 public enum UIScenes {
 
-    MAIN_MENU(null),
+    MAIN_MENU(new MainMenu()),
     IN_GAME(new InGameUI()),
     GAME_OVER(new GameOverScreen());
 
