@@ -10,9 +10,10 @@ public class RobotStats {
 
     final RobotStat laserLevel =
             new RobotStat("Mining Laser", Item.RUBY, 1, this::calcLaserTime, exponentialCost(4));
-    final RobotStat engines =
-            new RobotStat("TBD", Item.RUBY, 1, this::linear, this::linear);
     final RobotStat shields =
+            new RobotStat("Shield", Item.PCB, 0, this::calcShieldStrength, l -> 0);
+
+    final RobotStat engines =
             new RobotStat("TBD", Item.ROCK, 0, this::linear, this::linear);
 
     private final List<RobotStat> stats = Arrays.asList(laserLevel, engines, shields);
@@ -28,7 +29,11 @@ public class RobotStats {
     }
 
     private int calcLaserTime(int level){
-        return 105 - (25 * level);
+        return 75 - (15 * level);
+    }
+
+    private int calcShieldStrength(int level) {
+        return level * 100;
     }
 
     private int linear(int level){
@@ -71,6 +76,9 @@ public class RobotStats {
 
             this.value = calcValue.apply(level);
             this.cost = calcCost.apply(level);
+
+
+            System.out.println("Name: " + value);
         }
 
         public boolean isMaxedOut(){

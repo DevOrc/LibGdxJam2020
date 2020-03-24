@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.devorc.gdxjam.GameRenderer;
 import com.devorc.gdxjam.robot.Robot;
-import com.devorc.gdxjam.world.Tile;
 import com.devorc.gdxjam.world.World;
 
 public class Bomber extends Enemy {
@@ -39,27 +38,11 @@ public class Bomber extends Enemy {
             die();
         }
 
-        if(isInBlock()){
+        if(isInBlock(false)){
             die();
         }
     }
 
-    @Override
-    void die() {
-        Gdx.app.postRunnable(() -> world.addEntity(new Explosion(x, y)));
-        super.die();
-    }
-
-    private boolean isInBlock() {
-        int tileX = (int) Math.floor(x / Tile.SIZE);
-        int tileY = (int) Math.floor(y / Tile.SIZE);
-
-        if(tileX < 0 || tileY < 0 || tileX >= World.WORLD_SIZE || tileY >= World.WORLD_SIZE){
-            return false;
-        }
-
-        return world.getTileAt(tileX, tileY).getBlock() != null;
-    }
 
     private boolean collided() {
         Robot robot = world.getRobot();

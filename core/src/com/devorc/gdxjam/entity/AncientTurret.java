@@ -5,12 +5,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.devorc.gdxjam.GameRenderer;
+import com.devorc.gdxjam.Item;
 import com.devorc.gdxjam.robot.Robot;
 import com.devorc.gdxjam.world.World;
 
-public class AncientTurret extends Enemy{
+public class AncientTurret extends Enemy {
 
-    private static final int RANGE_SQUARED = 500 * 500;
+    private static final int RANGE_SQUARED = 1200 * 1200;
     private static final int RESET_TIME = 80;
     private static final int HEALTH = 15;
 
@@ -20,32 +21,52 @@ public class AncientTurret extends Enemy{
     float turretAngle = 0f;
     int turretTick = RESET_TIME;
 
-    public AncientTurret() {
+    public AncientTurret(World world) {
         super(HEALTH);
+        setWorld(world);
 
-        x = World.WORLD_PIXEL_SIZE / 2f;
-        y = World.WORLD_PIXEL_SIZE / 2f + 150;
+        do{
+            selectStartingPosition();
+        }while(isInBlock(true));
+    }
+
+    private void selectStartingPosition() {
+        Robot robot = world.getRobot();
+        int range = 800;
+
+        x = (random.nextInt(range) + 200) * (random.nextBoolean() ? 1 : -1);
+        y = (random.nextInt(range) + 200) * (random.nextBoolean() ? 1 : -1);
+
+        x += robot.getX();
+        y += robot.getY();
+    }
+
+    @Override
+    protected void onDeath() {
+        super.onDeath();
+
+        world.changeItemAmount(Item.PCB, 1);
     }
 
     @Override
     public void update() {
         double robotDistance = getRobotDistanceSquared();
 
-        if(turretTick <= RESET_TIME){
+        if(turretTick <= RESET_TIME) {
             turretTick++;
         }
 
-        if(robotDistance <= RANGE_SQUARED && turretTick >= RESET_TIME){
+        if(robotDistance <= RANGE_SQUARED && turretTick >= RESET_TIME) {
             fireAtRobot();
-        }else if(robotDistance >= RANGE_SQUARED){
+        } else if(robotDistance >= RANGE_SQUARED) {
             turretAngle += .01f;
-        }else{
+        } else {
             turretAngle = getAngleToRobot();
         }
     }
 
     private void fireAtRobot() {
-        turretAngle =  getAngleToRobot();
+        turretAngle = getAngleToRobot();
         float bulletOffset = getRadius() + 20;
         float x = (float) (this.x + (bulletOffset * Math.cos(turretAngle)));
         float y = (float) (this.y + (bulletOffset * Math.sin(turretAngle)));

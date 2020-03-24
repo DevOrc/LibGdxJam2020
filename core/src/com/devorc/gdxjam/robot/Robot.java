@@ -40,7 +40,7 @@ public class Robot {
     private Tile miningLocation;
     private double laserTime;
 
-    private int maxHealth = 125;
+    private int maxHealth = 500;
     private int health = maxHealth;
 
     private float maxOil = 500;
@@ -48,6 +48,8 @@ public class Robot {
 
     private int shooterTime = 15;
     private int shooterTick = 0;
+
+    private int shieldStrength;
 
     public Robot(Game game) {
         this.game = game;
@@ -61,6 +63,13 @@ public class Robot {
     }
 
     public void damage(int amount) {
+        if(shieldStrength >= amount){
+            shieldStrength -= amount;
+            return;
+        }else{
+            amount -= shieldStrength;
+            shieldStrength = 0;
+        }
         health -= amount;
     }
 
@@ -72,16 +81,17 @@ public class Robot {
         runLaser();
 
         updateOil();
-        updateHealth();
+        updateShield();
         trimRobotPositionToWorld();
     }
 
-    private void updateHealth() {
-        if(health < maxHealth){
-            health++;
-            oilLevel -= 4;
+    private void updateShield() {
+        if(shieldStrength < stats.shields.getValue().intValue() && oilLevel > 0){
+            shieldStrength++;
+            oilLevel--;
         }
     }
+
 
     private void updateOil() {
         if(accelerating){
@@ -220,12 +230,28 @@ public class Robot {
         int y = (int) (this.y - (SIZE / 2));
 
         GameRenderer.drawRotated(batch, texture, x, y, (float) (angle * 180f / Math.PI) - 90);
+        drawShields();
 
         if(runLaser){
             drawLaser(batch);
         }else{
             MiningParticle.reset();
         }
+    }
+
+    private void drawShields() {
+        ShapeDrawer sr = game.getRenderer().getShapeDrawer();
+        sr.setColor(Color.CYAN);
+
+        sr.setDefaultLineWidth(4);
+        sr.circle(x, y, calcShieldsRadius());
+    }
+
+    private float calcShieldsRadius(){
+        if(shieldStrength == 0)
+            return 0;
+
+        return (float) (25 + (5 * Math.sqrt(shieldStrength)));
     }
 
     private void drawLaser(SpriteBatch batch) {
@@ -263,7 +289,7 @@ public class Robot {
     }
 
     public boolean isDead(){
-        return health <= 0 || oilLevel <= 0;
+        return health <= 0;
     }
 
     public float getX() {
@@ -283,7 +309,7 @@ public class Robot {
     }
 
     public float getRadius() {
-        return onTexture.getWidth() / 2f;
+        return Math.max(onTexture.getWidth() / 2f, calcShieldsRadius());
     }
 
     public float getOilLevel() {

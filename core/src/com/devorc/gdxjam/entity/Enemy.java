@@ -1,14 +1,21 @@
 package com.devorc.gdxjam.entity;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.devorc.gdxjam.robot.Robot;
+import com.devorc.gdxjam.world.Block;
+import com.devorc.gdxjam.world.Tile;
 import com.devorc.gdxjam.world.World;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
+import java.util.Random;
+
 public abstract class Enemy implements Entity {
+
+    protected static final Random random = new Random();
 
     protected float x;
     protected float y;
@@ -22,7 +29,7 @@ public abstract class Enemy implements Entity {
         this.startHealth = health;
     }
 
-    public static void loadTextures(){
+    public static void loadTextures() {
         AncientTurret.texture = new Texture("ancient_turret.png");
         AncientTurret.turretTexture = new Texture("ancient_turret_top.png");
         Bomber.texture = new Texture("bomber.png");
@@ -30,11 +37,20 @@ public abstract class Enemy implements Entity {
         Explosion.loadEffect();
     }
 
-    public void damage(int amount){
+    public void damage(int amount) {
         health -= amount;
+
+        if(isDead()){
+            onDeath();
+        }
+    }
+
+    protected void onDeath() {
+        Gdx.app.postRunnable(() -> world.addEntity(new Explosion(x, y)));
     }
 
     void die() {
+        onDeath();
         health = -1;
     }
 
@@ -47,10 +63,26 @@ public abstract class Enemy implements Entity {
     }
 
     @Override
-    public void render(SpriteBatch batch){
-        if(health < startHealth){
+    public void render(SpriteBatch batch) {
+        if(health < startHealth) {
             drawHealthBar();
         }
+    }
+
+    protected boolean isInBlock(boolean countOil) {
+        int tileX = (int) Math.floor(x / Tile.SIZE);
+        int tileY = (int) Math.floor(y / Tile.SIZE);
+
+        if(tileX < 0 || tileY < 0 || tileX >= World.WORLD_SIZE || tileY >= World.WORLD_SIZE) {
+            return false;
+        }
+
+        Block block = world.getTileAt(tileX, tileY).getBlock();
+
+        if(countOil)
+            return block != null;
+
+        return block != null && block != Block.OIL;
     }
 
     private void drawHealthBar() {
@@ -71,7 +103,7 @@ public abstract class Enemy implements Entity {
     public abstract void update();
 
     @Override
-    public boolean isDead(){
+    public boolean isDead() {
         return health <= 0;
     }
 

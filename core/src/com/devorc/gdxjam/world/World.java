@@ -6,7 +6,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.devorc.gdxjam.Game;
 import com.devorc.gdxjam.Item;
-import com.devorc.gdxjam.entity.Bomber;
 import com.devorc.gdxjam.entity.Enemy;
 import com.devorc.gdxjam.entity.Entity;
 import com.devorc.gdxjam.entity.Explosion;
@@ -24,17 +23,18 @@ public class World {
 
     private final Robot robot;
     private final Game game;
+    private final EnemyManager enemyManager;
 
     private final Tile[][] tiles = new Tile[WORLD_SIZE][WORLD_SIZE];
     private final EnumMap<Item, Integer> inventory = new EnumMap<>(Item.class);
 
     private final List<Entity> entities = new LinkedList<>();
-    private final List<Enemy> enemies = new LinkedList<>();
 
     private boolean gameOver = false;
 
     public World(Game game) {
         this.game = game;
+        this.enemyManager = new EnemyManager(this);
 
         robot = new Robot(game);
         createTiles();
@@ -44,8 +44,6 @@ public class World {
         for(Item item: Item.values()){
             inventory.put(item, 0);
         }
-
-        addEntity(new Bomber());
     }
 
     public void addEntity(Entity entity){
@@ -53,7 +51,7 @@ public class World {
         entities.add(entity);
 
         if(entity instanceof Enemy){
-            enemies.add((Enemy) entity);
+            enemyManager.add((Enemy) entity);
         }
     }
 
@@ -71,7 +69,7 @@ public class World {
 
         entities.forEach(Entity::update);
         entities.removeIf(Entity::isDead);
-        enemies.removeIf(Enemy::isDead);
+        enemyManager.update();
 
         robot.update();
 
@@ -83,6 +81,8 @@ public class World {
     private void endGame() {
         gameOver = true;
         game.getUI().setScene(UIScenes.GAME_OVER);
+
+        addEntity(new Explosion(robot.getX(), robot.getY()));
     }
 
     public void render(SpriteBatch batch) {
@@ -104,7 +104,8 @@ public class World {
             if(!(e instanceof Explosion))
                 e.render(batch);
         }
-        robot.render(batch);
+        if(!gameOver)
+            robot.render(batch);
         for(Entity e: entities){
             if(e instanceof Explosion)
                 e.render(batch);
@@ -131,7 +132,7 @@ public class World {
     }
 
     public List<Enemy> getEnemies() {
-        return enemies;
+        return enemyManager.getEnemies();
     }
 
     public EnumMap<Item, Integer> getInventory() {
@@ -140,5 +141,9 @@ public class World {
 
     public boolean isGameOver() {
         return gameOver;
+    }
+
+    public EnemyManager getEnemyManager() {
+        return enemyManager;
     }
 }

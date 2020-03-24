@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.devorc.gdxjam.robot.Robot;
+import com.devorc.gdxjam.world.Block;
 import com.devorc.gdxjam.world.Tile;
 import com.devorc.gdxjam.world.World;
 import space.earlygrey.shapedrawer.ShapeDrawer;
@@ -87,7 +88,9 @@ public class Bullet implements Entity {
             return false;
         }
 
-        return world.getTileAt(tileX, tileY).getBlock() != null;
+        Block block = world.getTileAt(tileX, tileY).getBlock();
+
+        return block != null && block != Block.OIL;
     }
 
     private boolean isOutsideWorld() {
