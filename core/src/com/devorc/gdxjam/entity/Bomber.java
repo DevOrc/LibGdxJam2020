@@ -46,7 +46,8 @@ public class Bomber extends Enemy {
 
     private boolean collided() {
         Robot robot = world.getRobot();
-        return new Vector2(robot.getX(), robot.getY()).sub(this.x, this.y).len2() < (RADIUS * RADIUS);
+        double radius = RADIUS + robot.getRadius();
+        return new Vector2(robot.getX(), robot.getY()).sub(this.x, this.y).len2() < (radius * radius);
     }
 
     @Override

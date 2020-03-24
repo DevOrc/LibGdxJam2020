@@ -82,7 +82,7 @@ public class World {
         gameOver = true;
         game.getUI().setScene(UIScenes.GAME_OVER);
 
-        addEntity(new Explosion(robot.getX(), robot.getY()));
+        addEntity(new Explosion(robot.getX(), robot.getY(), 8f));
     }
 
     public void render(SpriteBatch batch) {

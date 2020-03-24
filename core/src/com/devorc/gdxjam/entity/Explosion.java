@@ -18,10 +18,11 @@ public class Explosion implements Entity {
 
     private final ParticleEffect effect;
 
-    public Explosion(float x, float y) {
+    public Explosion(float x, float y, float scale) {
         if(!isHTML){
             effect = pool.obtain();
             effect.setPosition(x, y);
+            effect.scaleEffect(scale);
             effect.start();
         }else{
             effect = null;
@@ -29,6 +30,10 @@ public class Explosion implements Entity {
 
 
         Sounds.EXPLOSION.play(1.2f);
+    }
+
+    public Explosion(float x, float y) {
+        this(x, y, .25f);
     }
 
     public static void loadEffect(){

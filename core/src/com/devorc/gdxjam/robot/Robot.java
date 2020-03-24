@@ -40,7 +40,7 @@ public class Robot {
     private Tile miningLocation;
     private double laserTime;
 
-    private int maxHealth = 500;
+    private int maxHealth = 50000;
     private int health = maxHealth;
 
     private float maxOil = 500;
@@ -79,10 +79,39 @@ public class Robot {
 
         updateShooter();
         runLaser();
+        checkCollision();
 
         updateOil();
         updateShield();
         trimRobotPositionToWorld();
+    }
+
+    private void checkCollision() {
+        int robotX = (int) (x / Tile.SIZE);
+        int robotY = (int) (y / Tile.SIZE);
+
+        for(int tileX = robotX - 2; tileX <= robotX + 2; tileX++){
+            for(int tileY = robotY - 2; tileY <= robotY + 2; tileY++){
+                Block block = game.getWorld().getTileAt(tileX, tileY).getBlock();
+                if(block == null || block == Block.OIL)
+                    continue;
+
+                if(checkWallCollision(tileX, tileY)){
+                    velocity = 0;
+                    x += 10 * Math.cos(angle + Math.PI);
+                    y += 10 * Math.sin(angle + Math.PI);
+                }
+            }
+        }
+    }
+
+    private boolean checkWallCollision(int tileX, int tileY) {
+        Vector2 robot = new Vector2(x, y);
+        Vector2 wall = new Vector2(Tile.SIZE * (tileX + .5f), Tile.SIZE * (tileY + .5f));
+        float dSquared = robot.dst2(wall);
+        double radius = (onTexture.getWidth() / 2f) + (Math.sqrt(2) * Tile.SIZE / 2f);
+
+        return dSquared < Math.pow(radius, 2);
     }
 
     private void updateShield() {
