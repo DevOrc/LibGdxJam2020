@@ -1,9 +1,11 @@
 package com.devorc.gdxjam.world;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.devorc.gdxjam.entity.AncientTurret;
 import com.devorc.gdxjam.entity.Bomber;
 import com.devorc.gdxjam.entity.Enemy;
+import com.devorc.gdxjam.entity.Mothership;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -20,7 +22,7 @@ public class EnemyManager {
     private long nextWaveTime = System.currentTimeMillis();
     int enemyCount = 2;
 
-    private int wave = 1;
+    private int wave = 0;
 
     public EnemyManager(World world) {
         this.world = world;
@@ -38,10 +40,14 @@ public class EnemyManager {
             Gdx.app.log("DEBUG", "Spawned Enemy");
         }
 
-        if(nextWaveTime < System.currentTimeMillis()){
+        if(nextWaveTime < System.currentTimeMillis() || Gdx.input.isKeyJustPressed(Input.Keys.L)){
             nextWaveTime += 15000;
             wave++;
-            enemyCount = 2 + (wave / 2);
+            enemyCount = 2 + (wave / 2) + (Math.floorDiv(wave, 5) * 3);
+
+            if(wave % 5 == 0){
+                world.addEntity(new Mothership(wave));
+            }
         }
     }
 
@@ -51,7 +57,7 @@ public class EnemyManager {
         if(id < 7){
             world.addEntity(new AncientTurret(world));
         }else{
-            world.addEntity(new Bomber());
+            world.addEntity(new Bomber(world));
         }
     }
 

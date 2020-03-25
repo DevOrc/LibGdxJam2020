@@ -10,6 +10,7 @@ import com.devorc.gdxjam.world.World;
 
 public class Bomber extends Enemy {
 
+    private static final int HEALTH = 10;
     private static final int RADIUS = 12;
     private static final int DAMAGE = 25;
     private static final float VELOCITY = 600;
@@ -17,12 +18,24 @@ public class Bomber extends Enemy {
     static Texture texture;
 
     private float renderAngle = 0;
+    private boolean ignoreBlocks;
 
-    public Bomber() {
+    public Bomber(World world) {
+        super(HEALTH);
+        setWorld(world);
+
+        do{
+            selectStartingPosition(1200);
+        }while(isInBlock(true) && inWorld());
+    }
+
+    public Bomber(World world, float x, float y, boolean ignoreBlocks) {
         super(10);
+        setWorld(world);
 
-        x = World.WORLD_PIXEL_SIZE / 2f;
-        y = World.WORLD_PIXEL_SIZE / 2f - 200;
+        this.x = x;
+        this.y = y;
+        this.ignoreBlocks = ignoreBlocks;
     }
 
     @Override
@@ -38,7 +51,7 @@ public class Bomber extends Enemy {
             die();
         }
 
-        if(isInBlock(false)){
+    if(isInBlock(false) && !ignoreBlocks){
             die();
         }
     }

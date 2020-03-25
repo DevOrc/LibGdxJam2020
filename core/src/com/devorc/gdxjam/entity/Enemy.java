@@ -38,12 +38,27 @@ public abstract class Enemy implements Entity {
         Explosion.loadEffect();
     }
 
+    void selectStartingPosition(int range) {
+        Robot robot = world.getRobot();
+
+        x = (random.nextInt(range) + 200) * (random.nextBoolean() ? 1 : -1);
+        y = (random.nextInt(range) + 200) * (random.nextBoolean() ? 1 : -1);
+
+        x += robot.getX();
+        y += robot.getY();
+    }
+
     public void damage(int amount) {
         health -= amount;
 
         if(isDead()){
             onDeath();
         }
+    }
+
+    protected boolean inWorld() {
+        float outerEdge = World.WORLD_PIXEL_SIZE - (getRadius() * 2);
+        return x > 0 && y > 0 && x < World.WORLD_PIXEL_SIZE - outerEdge && y < outerEdge;
     }
 
     protected void onDeath() {
@@ -61,6 +76,14 @@ public abstract class Enemy implements Entity {
         Vector2 robotPos = new Vector2(robot.getX(), robot.getY());
 
         return robotPos.sub(turretPos).angleRad();
+    }
+
+    protected float getDistanceSquaredToRobot() {
+        Robot robot = world.getRobot();
+        Vector2 turretPos = new Vector2(x, y);
+        Vector2 robotPos = new Vector2(robot.getX(), robot.getY());
+
+        return robotPos.dst2(turretPos);
     }
 
     @Override

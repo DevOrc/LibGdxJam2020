@@ -9,7 +9,6 @@ import com.devorc.gdxjam.Item;
 import com.devorc.gdxjam.entity.Enemy;
 import com.devorc.gdxjam.entity.Entity;
 import com.devorc.gdxjam.entity.Explosion;
-import com.devorc.gdxjam.entity.Mothership;
 import com.devorc.gdxjam.robot.Robot;
 import com.devorc.gdxjam.ui.UIScenes;
 
@@ -45,8 +44,6 @@ public class World {
         for(Item item: Item.values()){
             inventory.put(item, 0);
         }
-
-        addEntity(new Mothership());
     }
 
     public void addEntity(Entity entity){

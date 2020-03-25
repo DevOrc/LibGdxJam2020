@@ -26,19 +26,8 @@ public class AncientTurret extends Enemy {
         setWorld(world);
 
         do{
-            selectStartingPosition();
-        }while(isInBlock(true));
-    }
-
-    private void selectStartingPosition() {
-        Robot robot = world.getRobot();
-        int range = 800;
-
-        x = (random.nextInt(range) + 200) * (random.nextBoolean() ? 1 : -1);
-        y = (random.nextInt(range) + 200) * (random.nextBoolean() ? 1 : -1);
-
-        x += robot.getX();
-        y += robot.getY();
+            selectStartingPosition(800);
+        }while(isInBlock(true) && inWorld());
     }
 
     @Override
