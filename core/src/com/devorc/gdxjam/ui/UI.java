@@ -16,6 +16,8 @@ public class UI {
     private final Stage stage = new Stage(new ScreenViewport());
     private final Game game;
 
+    private UIScenes scene;
+
     public UI(Game game) {
         this.game = game;
 
@@ -32,6 +34,7 @@ public class UI {
         Gdx.app.log("INFO", "Setting UI: " + scene.name());
         scene.getComponent().setFillParent(true);
 
+        this.scene = scene;
         stage.getRoot().clear();
         stage.addActor(scene.getComponent());
     }
@@ -59,5 +62,9 @@ public class UI {
                 listener.accept(event);
             }
         });
+    }
+
+    public UIScenes getScene() {
+        return scene;
     }
 }

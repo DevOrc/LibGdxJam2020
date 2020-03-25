@@ -15,8 +15,10 @@ public class GameOverScreen extends Table {
 
         VisLabel label = new VisLabel("Game Over!", Styles.title);
 
-        TextButton restartButton = new VisTextButton("Restart", Styles.buttons);
-        UI.addClickListener(restartButton, event -> restartGame());
+        TextButton restartButton = new VisTextButton("Restart: Normal Mode", Styles.buttons);
+        UI.addClickListener(restartButton, event -> restartGame(false));
+        TextButton restartInsaneButton = new VisTextButton("Restart: Insane Mode", Styles.buttons);
+        UI.addClickListener(restartInsaneButton, event -> restartGame(true));
         TextButton mainMenuButton = new VisTextButton("Main Menu", Styles.buttons);
         UI.addClickListener(mainMenuButton, event -> gotoMainMenu());
         TextButton quitButton = new VisTextButton("Quit!", Styles.buttons);
@@ -25,6 +27,7 @@ public class GameOverScreen extends Table {
         add(label).padTop(100).row();
         add().grow().row();
         add(restartButton).center().size(300, 50).growX().padBottom(20).row();
+        add(restartInsaneButton).center().size(300, 50).growX().padBottom(20).row();
         add(mainMenuButton).center().size(300, 50).growX().padBottom(20).row();
         add(quitButton).center().size(300, 50).growX().padBottom(100);
     }
@@ -34,8 +37,8 @@ public class GameOverScreen extends Table {
         game.getUI().setScene(UIScenes.MAIN_MENU);
     }
 
-    private void restartGame() {
+    private void restartGame(boolean insane) {
         Game game = (Game) Gdx.app.getApplicationListener();
-        game.startGame();
+        game.startGame(insane);
     }
 }

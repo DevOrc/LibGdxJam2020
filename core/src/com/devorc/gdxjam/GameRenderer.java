@@ -10,8 +10,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.devorc.gdxjam.ui.StatsBar;
 import com.devorc.gdxjam.ui.InventoryUI;
+import com.devorc.gdxjam.ui.StatsBar;
+import com.devorc.gdxjam.world.World;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
 public class GameRenderer {
@@ -40,8 +41,18 @@ public class GameRenderer {
         uiShapeDrawer = new ShapeDrawer(uiBatch, dot);
     }
 
+    public void renderMainMenuWorld(World world) {
+        syncCameraToPlayer(world);
+        camera.update();
+        batch.setProjectionMatrix(camera.combined);
+
+        batch.begin();
+        world.render(batch);
+        batch.end();
+    }
+
     public void render() {
-        syncCameraToPlayer();
+        syncCameraToPlayer(game.getWorld());
         camera.update();
         batch.setProjectionMatrix(camera.combined);
 
@@ -85,9 +96,9 @@ public class GameRenderer {
         batch.end();
     }
 
-    private void syncCameraToPlayer() {
-        camera.position.x = game.getWorld().getRobot().getX();
-        camera.position.y = game.getWorld().getRobot().getY();
+    private void syncCameraToPlayer(World world) {
+        camera.position.x = world.getRobot().getX();
+        camera.position.y = world.getRobot().getY();
     }
 
     public void onResize(int width, int height) {

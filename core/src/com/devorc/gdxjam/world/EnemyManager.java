@@ -74,4 +74,8 @@ public class EnemyManager {
     public int getWave() {
         return wave;
     }
+
+    public void setWave(int wave) {
+        this.wave = wave;
+    }
 }

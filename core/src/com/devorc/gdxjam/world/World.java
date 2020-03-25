@@ -32,6 +32,12 @@ public class World {
     private boolean gameOver = false;
 
     public World(Game game) {
+        this(game, new Robot(game));
+    }
+
+    public World(Game game, Robot robot) {
+        this.robot = robot;
+
         this.game = game;
         this.enemyManager = new EnemyManager(this);
 
@@ -161,5 +167,9 @@ public class World {
 
     public EnemyManager getEnemyManager() {
         return enemyManager;
+    }
+
+    public List<Entity> getEntities() {
+        return entities;
     }
 }

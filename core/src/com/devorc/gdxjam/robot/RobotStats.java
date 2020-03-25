@@ -52,6 +52,14 @@ public class RobotStats {
         return stats;
     }
 
+    public void maxAll() {
+        stats.forEach(stat -> {
+            while(stat.getCost() != Integer.MAX_VALUE){
+                stat.onUpgrade();
+            }
+        });
+    }
+
     class RobotStat{
 
         private final String name;
@@ -80,9 +88,6 @@ public class RobotStats {
 
             this.value = calcValue.apply(level);
             this.cost = calcCost.apply(level);
-
-
-            System.out.println("Name: " + value);
         }
 
         public boolean isMaxedOut(){

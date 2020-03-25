@@ -11,6 +11,7 @@ import com.devorc.gdxjam.ui.UI;
 import com.devorc.gdxjam.ui.UIScenes;
 import com.devorc.gdxjam.world.Block;
 import com.devorc.gdxjam.world.Floor;
+import com.devorc.gdxjam.world.MainMenuWorld;
 import com.devorc.gdxjam.world.World;
 import com.kotcrab.vis.ui.VisUI;
 
@@ -19,6 +20,7 @@ public class Game extends ApplicationAdapter {
 	private GameRenderer renderer;
 	private UI ui;
 	private World world;
+	private World mainMenuWorld;
 
 	@Override
 	public void create () {
@@ -34,6 +36,7 @@ public class Game extends ApplicationAdapter {
 
 		renderer = new GameRenderer(this);
 		ui = new UI(this);
+		mainMenuWorld = new MainMenuWorld(this);
 	}
 
 	@Override
@@ -41,9 +44,12 @@ public class Game extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		if(world != null){
+		if(world != null && ui.getScene() != UIScenes.MAIN_MENU){
 			world.update();
 			renderer.render();
+		}else if(ui.getScene() == UIScenes.MAIN_MENU){
+			mainMenuWorld.update();
+			renderer.renderMainMenuWorld(mainMenuWorld);
 		}
 
 		ui.render();
@@ -55,9 +61,15 @@ public class Game extends ApplicationAdapter {
 		ui.resize(width, height);
 	}
 
-	public void startGame(){
+	public void startGame(boolean insane){
 		world = new World(this);
 		ui.setScene(UIScenes.IN_GAME);
+
+		if(insane){
+			world.getRobot().getStats().maxAll();
+			world.getRobot().maxShields();
+			world.getEnemyManager().setWave(30);
+		}
 	}
 
 	@Override

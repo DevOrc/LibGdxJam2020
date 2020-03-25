@@ -31,12 +31,12 @@ public class Robot {
 
     private float x = World.WORLD_PIXEL_SIZE / 2f;
     private float y = World.WORLD_PIXEL_SIZE / 2f;
-    private float angle = (float) (Math.PI / 2);
+    protected float angle = (float) (Math.PI / 2);
 
-    private float velocity;
-    private float angularVelocity;
+    protected float velocity;
+    protected float angularVelocity;
 
-    private boolean accelerating;
+    protected boolean accelerating;
 
     private boolean runLaser;
     private Tile miningLocation;
@@ -63,6 +63,10 @@ public class Robot {
         MiningParticle.loadParticle();
     }
 
+    public void maxShields() {
+        shieldStrength = stats.shields.getValue().intValue();
+    }
+
     public void damage(int amount) {
         if(shieldStrength >= amount){
             shieldStrength -= amount;
@@ -87,7 +91,7 @@ public class Robot {
         trimRobotPositionToWorld();
     }
 
-    private void checkCollision() {
+    protected void checkCollision() {
         int robotX = (int) (x / Tile.SIZE);
         int robotY = (int) (y / Tile.SIZE);
 
@@ -144,7 +148,7 @@ public class Robot {
         }
     }
 
-    private void updateShooter() {
+    protected void updateShooter() {
         shooterTick++;
 
         if(Gdx.input.isButtonPressed(Input.Buttons.LEFT) && shooterTick >= stats.turret.getValue().intValue()){
@@ -168,7 +172,7 @@ public class Robot {
         shooterTick = 0;
     }
 
-    private void fireBullet(float angle) {
+    protected void fireBullet(float angle) {
         float offset = (onTexture.getWidth() / 2f) + 10;
         float x = (float) (this.x + (offset * Math.cos(angle)));
         float y = (float) (this.y + (offset * Math.sin(angle)));
@@ -178,7 +182,7 @@ public class Robot {
         game.getWorld().addEntity(bullet);
     }
 
-    private void runLaser() {
+    protected void runLaser() {
         if(Gdx.input.isButtonPressed(Input.Buttons.RIGHT)){
             runLaser = true;
             laserTime -= 30 * Gdx.graphics.getDeltaTime();
@@ -238,7 +242,7 @@ public class Robot {
         angle += -angularVelocity * Gdx.graphics.getDeltaTime();
     }
 
-    private void updateControls() {
+    protected void updateControls() {
         updateVelocity();
         updateAngularVelocity();
     }
@@ -379,5 +383,9 @@ public class Robot {
 
     public RobotStats getStats() {
         return stats;
+    }
+
+    public void setY(float y) {
+        this.y = y;
     }
 }
