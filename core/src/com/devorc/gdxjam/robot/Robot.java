@@ -193,7 +193,7 @@ public class Robot {
     }
 
     private void mineBlock() {
-        if(miningLocation.getBlock() == null)
+        if(miningLocation == null || miningLocation.getBlock() == null)
             return;
 
 
@@ -236,13 +236,14 @@ public class Robot {
         x += velocity * Gdx.graphics.getDeltaTime() * Math.cos(angle);
         y += velocity * Gdx.graphics.getDeltaTime() * Math.sin(angle);
         angle += -angularVelocity * Gdx.graphics.getDeltaTime();
-
-        if(Math.abs(angularVelocity) > 1.7){
-            angularVelocity = 1.7f * Math.signum(angularVelocity);
-        }
     }
 
     private void updateControls() {
+        updateVelocity();
+        updateAngularVelocity();
+    }
+
+    private void updateVelocity() {
         if(Gdx.input.isKeyPressed(Input.Keys.W)){
             velocity += 250 * Gdx.graphics.getDeltaTime();
             accelerating = true;
@@ -259,13 +260,20 @@ public class Robot {
         }else if(velocity > MAX_VELOCITY){
             velocity = MAX_VELOCITY;
         }
+    }
 
+    private void updateAngularVelocity() {
         if(Gdx.input.isKeyPressed(Input.Keys.D)){
-            angularVelocity += 3 * Gdx.graphics.getDeltaTime();
+            angularVelocity += 5 * Gdx.graphics.getDeltaTime();
         }else if(Gdx.input.isKeyPressed(Input.Keys.A)){
-            angularVelocity -= 3 * Gdx.graphics.getDeltaTime();
+            angularVelocity -= 5 * Gdx.graphics.getDeltaTime();
         }else{
-            angularVelocity -= 5 * angularVelocity * Gdx.graphics.getDeltaTime();
+            angularVelocity -= 8 * angularVelocity * Gdx.graphics.getDeltaTime();
+        }
+
+        float maxAngularVelocity = 2.5f;
+        if(Math.abs(angularVelocity) > maxAngularVelocity){
+            angularVelocity = maxAngularVelocity * Math.signum(angularVelocity);
         }
     }
 
@@ -324,6 +332,10 @@ public class Robot {
         int tileY = (int) Math.floor(pos.y / Tile.SIZE);
 
         World world = game.getWorld();
+
+        if(tileX < 0 || tileY < 0 || tileX >= World.WORLD_SIZE || tileY >= World.WORLD_SIZE)
+            return;
+
         Tile miningTile = world.getTileAt(tileX, tileY);
 
         if(!miningTile.equals(miningLocation)){

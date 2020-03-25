@@ -58,7 +58,7 @@ public abstract class Enemy implements Entity {
 
     protected boolean inWorld() {
         float outerEdge = World.WORLD_PIXEL_SIZE - (getRadius() * 2);
-        return x > 0 && y > 0 && x < World.WORLD_PIXEL_SIZE - outerEdge && y < outerEdge;
+        return x > 0 && y > 0 && x < outerEdge && y < outerEdge;
     }
 
     protected void onDeath() {

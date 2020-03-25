@@ -23,7 +23,13 @@ public class Tile {
         this.x = x;
         this.y = y;
 
-        setFloor(Floor.GRASS);
+        if(random.nextInt(3) == 0){
+            setFloor(Floor.DIRT_2);
+        }else if(random.nextInt(4) == 0){
+            setFloor(Floor.DIRT_3);
+        }else{
+            setFloor(Floor.DIRT);
+        }
     }
 
     public void render(SpriteBatch batch) {

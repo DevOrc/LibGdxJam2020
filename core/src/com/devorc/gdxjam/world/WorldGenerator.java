@@ -79,7 +79,7 @@ public class WorldGenerator {
             for(int y = 1; y < WORLD_SIZE - 1; y++) {
                 Tile tile = world.getTileAt(x, y);
 
-                if(tile.getFloor() == Floor.GRASS){
+                if(isDirt(tile)){
                     List<Tile> neighbors = getNeighborTiles(x, y);
 
                     int floorCount = (int) neighbors.stream().filter(t -> t.getFloor() == main).count();
@@ -89,6 +89,17 @@ public class WorldGenerator {
                     }
                 }
             }
+        }
+    }
+
+    private boolean isDirt(Tile tile) {
+        switch(tile.getFloor()){
+            case DIRT:
+            case DIRT_2:
+            case DIRT_3:
+                return true;
+            default:
+                return false;
         }
     }
 

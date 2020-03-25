@@ -40,16 +40,16 @@ public class World {
 
         new WorldGenerator(this).generate();
 
-        for(Item item: Item.values()){
+        for(Item item : Item.values()) {
             inventory.put(item, 0);
         }
     }
 
-    public void addEntity(Entity entity){
+    public void addEntity(Entity entity) {
         entity.setWorld(this);
         entities.add(entity);
 
-        if(entity instanceof Enemy){
+        if(entity instanceof Enemy) {
             enemyManager.add((Enemy) entity);
         }
     }
@@ -72,8 +72,14 @@ public class World {
 
         robot.update();
 
-        if(robot.isDead() || Gdx.input.isKeyPressed(Input.Keys.K)){
+        if(robot.isDead() || Gdx.input.isKeyPressed(Input.Keys.K)) {
             endGame();
+        }
+
+        if(Gdx.input.isKeyPressed(Input.Keys.P)) {
+            for(Item item : Item.values()) {
+                changeItemAmount(item, 1);
+            }
         }
     }
 
@@ -92,7 +98,7 @@ public class World {
 
         for(int x = playerX - renderWidth; x < playerX + renderWidth; x++) {
             for(int y = playerY - renderHeight; y < playerY + renderHeight; y++) {
-                if(x >= WORLD_SIZE || y >= WORLD_SIZE || x < 0 || y < 0){
+                if(x >= WORLD_SIZE || y >= WORLD_SIZE || x < 0 || y < 0) {
                     continue;
                 }
 
@@ -100,13 +106,13 @@ public class World {
             }
         }
 
-        for(Entity e: entities){
+        for(Entity e : entities) {
             if(!(e instanceof Explosion))
                 e.render(batch);
         }
         if(!gameOver)
             robot.render(batch);
-        for(Entity e: entities){
+        for(Entity e : entities) {
             if(e instanceof Explosion)
                 e.render(batch);
         }
@@ -122,7 +128,7 @@ public class World {
         return (Math.floorDiv(Gdx.graphics.getHeight(), Tile.SIZE) / 2) + 4;
     }
 
-    public void changeItemAmount(Item item, int delta){
+    public void changeItemAmount(Item item, int delta) {
         int val = inventory.getOrDefault(item, 0);
         val += delta;
 

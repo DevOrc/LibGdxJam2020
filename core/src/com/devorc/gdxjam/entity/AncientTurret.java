@@ -27,7 +27,7 @@ public class AncientTurret extends Enemy {
 
         do{
             selectStartingPosition(800);
-        }while(isInBlock(true) && !inWorld());
+        }while(isInBlock(true) || !inWorld());
     }
 
     @Override
