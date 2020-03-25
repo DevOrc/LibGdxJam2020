@@ -1,6 +1,5 @@
 package com.devorc.gdxjam.world;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -88,10 +87,11 @@ public class World {
     public void render(SpriteBatch batch) {
         int playerX = (int) (robot.getX() / Tile.SIZE);
         int playerY = (int) (robot.getY() / Tile.SIZE);
-        int renderArea = Gdx.app.getType() == Application.ApplicationType.WebGL ? 15: 50;
+        int renderWidth = getRenderWidth();
+        int renderHeight = getRenderHeight();
 
-        for(int x = playerX - renderArea; x < playerX + renderArea; x++) {
-            for(int y = playerY - renderArea; y < playerY + renderArea; y++) {
+        for(int x = playerX - renderWidth; x < playerX + renderWidth; x++) {
+            for(int y = playerY - renderHeight; y < playerY + renderHeight; y++) {
                 if(x >= WORLD_SIZE || y >= WORLD_SIZE || x < 0 || y < 0){
                     continue;
                 }
@@ -110,6 +110,16 @@ public class World {
             if(e instanceof Explosion)
                 e.render(batch);
         }
+    }
+
+    private int getRenderWidth() {
+        //Add four to make sure the background never shows
+        return (Math.floorDiv(Gdx.graphics.getWidth() + 200, Tile.SIZE) / 2) + 4;
+    }
+
+    private int getRenderHeight() {
+        //Add four to make sure the background never shows
+        return (Math.floorDiv(Gdx.graphics.getHeight(), Tile.SIZE) / 2) + 4;
     }
 
     public void changeItemAmount(Item item, int delta){

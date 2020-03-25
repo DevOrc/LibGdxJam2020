@@ -26,7 +26,7 @@ public class Bomber extends Enemy {
 
         do{
             selectStartingPosition(1200);
-        }while(isInBlock(true) && inWorld());
+        }while(isInBlock(true) && !inWorld());
     }
 
     public Bomber(World world, float x, float y, boolean ignoreBlocks) {
