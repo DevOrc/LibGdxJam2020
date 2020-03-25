@@ -20,13 +20,13 @@ public class HtmlLauncher extends GwtApplication {
 
         // UNCOMMENT THIS CODE FOR A RESIZABLE APPLICATION
 //         PADDING is to avoid scrolling in iframes, set to 20 if you have problems
-         private static final int PADDING = 20;
+         private static final int PADDING = 0;
          private GwtApplicationConfiguration cfg;
 
          @Override
          public GwtApplicationConfiguration getConfig() {
              int w = Window.getClientWidth() - PADDING;
-             int h = Window.getClientHeight() - PADDING - 100;
+             int h = Window.getClientHeight() - PADDING;
              cfg = new GwtApplicationConfiguration(w, h);
              Window.enableScrolling(false);
              Window.setMargin("0");
@@ -40,7 +40,7 @@ public class HtmlLauncher extends GwtApplication {
              @Override
              public void onResize(ResizeEvent event) {
                  int width = event.getWidth() - PADDING;
-                 int height = event.getHeight() - PADDING - 100;
+                 int height = event.getHeight() - PADDING;
                  getRootPanel().setWidth("" + width + "px");
                  getRootPanel().setHeight("" + height + "px");
                  consoleLog("New Size: " + width + "x" + height);
