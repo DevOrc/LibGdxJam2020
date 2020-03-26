@@ -28,6 +28,7 @@ public class World {
     private final EnumMap<Item, Integer> inventory = new EnumMap<>(Item.class);
 
     private final List<Entity> entities = new LinkedList<>();
+    private long gameTime = System.currentTimeMillis();
 
     private boolean gameOver = false;
 
@@ -92,6 +93,7 @@ public class World {
     private void endGame() {
         gameOver = true;
         game.getUI().setScene(UIScenes.GAME_OVER);
+        gameTime = System.currentTimeMillis() - gameTime;
 
         addEntity(new Explosion(robot.getX(), robot.getY(), 8f));
     }
@@ -171,5 +173,9 @@ public class World {
 
     public List<Entity> getEntities() {
         return entities;
+    }
+
+    public long getGameTime() {
+        return gameTime;
     }
 }

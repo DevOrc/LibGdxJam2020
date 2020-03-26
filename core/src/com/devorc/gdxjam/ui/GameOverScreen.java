@@ -1,44 +1,76 @@
 package com.devorc.gdxjam.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.Align;
 import com.devorc.gdxjam.Game;
+import com.devorc.gdxjam.world.World;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 
 public class GameOverScreen extends Table {
 
+    private final Game game = (Game) Gdx.app.getApplicationListener();
+
+    private final Label statsLabel;
+
     public GameOverScreen() {
         super(VisUI.getSkin());
 
         VisLabel label = new VisLabel("Game Over!", Styles.title);
+        statsLabel = new VisLabel("", Styles.mediumLabel);
+        statsLabel.setAlignment(Align.center);
 
-        TextButton restartButton = new VisTextButton("Restart: Normal Mode", Styles.buttons);
+        TextButton restartButton = new VisTextButton("Start Normal", Styles.buttons);
         UI.addClickListener(restartButton, event -> restartGame(false));
-        TextButton restartInsaneButton = new VisTextButton("Restart: Insane Mode", Styles.buttons);
+        TextButton restartInsaneButton = new VisTextButton("Start Insane", Styles.buttons);
         UI.addClickListener(restartInsaneButton, event -> restartGame(true));
         TextButton mainMenuButton = new VisTextButton("Main Menu", Styles.buttons);
         UI.addClickListener(mainMenuButton, event -> gotoMainMenu());
         TextButton quitButton = new VisTextButton("Quit!", Styles.buttons);
         UI.addClickListener(quitButton, event -> Gdx.app.exit());
 
-        add(label).padTop(100).row();
-        add().grow().row();
-        add(restartButton).center().size(300, 50).growX().padBottom(20).row();
-        add(restartInsaneButton).center().size(300, 50).growX().padBottom(20).row();
-        add(mainMenuButton).center().size(300, 50).growX().padBottom(20).row();
-        add(quitButton).center().size(300, 50).growX().padBottom(100);
+        add(label).padTop(100).colspan(2).row();
+        add(statsLabel).padTop(15).colspan(2).row();
+        add().grow().colspan(2).row();
+        add(restartButton).center().size(300, 50).align(Align.right).padBottom(20).padRight(10);
+        add(restartInsaneButton).center().size(300, 50).align(Align.left).padBottom(20).row();
+        add(mainMenuButton).center().size(300, 50).align(Align.right).padBottom(100).padRight(10);
+        add(quitButton).center().size(300, 50).align(Align.left).padBottom(100);
     }
 
     private void gotoMainMenu() {
-        Game game = (Game) Gdx.app.getApplicationListener();
         game.getUI().setScene(UIScenes.MAIN_MENU);
     }
 
     private void restartGame(boolean insane) {
-        Game game = (Game) Gdx.app.getApplicationListener();
         game.startGame(insane);
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+
+        if(game.getWorld() != null){
+            String stats = getEndGameStats(game.getWorld());
+
+            statsLabel.setText(stats);
+        }
+    }
+
+    private String getEndGameStats(World world) {
+        StringBuilder builder = new StringBuilder();
+        long gameTime = world.getGameTime() / 1000;
+        int wave = world.getEnemyManager().getWave();
+        int enemiesKilled = world.getEnemyManager().getDeadEnemies();
+
+        builder.append("Wave: ").append(wave).append("\n");
+        builder.append("Enemies Killed: ").append(enemiesKilled).append("\n");
+        builder.append("Time Survived: ").append(gameTime).append(" seconds\n");
+
+        return builder.toString();
     }
 }

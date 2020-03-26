@@ -9,10 +9,12 @@ public class Styles {
     public static final Color border = new Color(0x48b3e8ff);
 
     public static Label.LabelStyle title;
+    public static Label.LabelStyle mediumLabel;
     public static VisTextButton.VisTextButtonStyle buttons;
 
     public static void init(){
         title = new Label.LabelStyle(Font.getTitleFont(), Color.WHITE);
+        mediumLabel = new Label.LabelStyle(Font.getFont(), Color.WHITE);
 
         buttons = new VisTextButton.VisTextButtonStyle();
         buttons.over = new ColorDrawable(new Color(0x3a3a3aff), border);
