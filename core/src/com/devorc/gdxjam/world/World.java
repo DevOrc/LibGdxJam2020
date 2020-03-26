@@ -8,6 +8,7 @@ import com.devorc.gdxjam.Item;
 import com.devorc.gdxjam.entity.Enemy;
 import com.devorc.gdxjam.entity.Entity;
 import com.devorc.gdxjam.entity.Explosion;
+import com.devorc.gdxjam.entity.Powerups;
 import com.devorc.gdxjam.robot.Robot;
 import com.devorc.gdxjam.ui.UIScenes;
 
@@ -38,14 +39,15 @@ public class World {
 
     public World(Game game, Robot robot) {
         this.robot = robot;
-
         this.game = game;
         this.enemyManager = new EnemyManager(this);
 
-        robot = new Robot(game);
         createTiles();
-
         new WorldGenerator(this).generate();
+
+        for(int i = 0; i < 5; i++){
+            Powerups.spawnRandom(this);
+        }
 
         for(Item item : Item.values()) {
             inventory.put(item, 0);
@@ -87,6 +89,8 @@ public class World {
             for(Item item : Item.values()) {
                 changeItemAmount(item, 1);
             }
+
+            Powerups.HEALTH.spawn(this);
         }
     }
 

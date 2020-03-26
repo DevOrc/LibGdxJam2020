@@ -78,6 +78,10 @@ public class Robot {
         health -= amount;
     }
 
+    public void heal(int amount){
+        health = Math.min(health + amount, maxHealth);
+    }
+
     public void update() {
         updateControls();
         updatePositionVelocity();
