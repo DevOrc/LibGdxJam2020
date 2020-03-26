@@ -10,6 +10,9 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 
 		config.title = "Robogeddon";
+		config.width = Game.DEFAULT_WIDTH;
+		config.height = Game.DEFAULT_HEIGHT;
+		config.foregroundFPS = 60;
 		config.addIcon("icon.png", Files.FileType.Internal);
 
 		new LwjglApplication(new Game(), config);

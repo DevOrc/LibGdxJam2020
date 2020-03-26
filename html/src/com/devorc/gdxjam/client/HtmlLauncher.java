@@ -39,8 +39,12 @@ public class HtmlLauncher extends GwtApplication {
          class ResizeListener implements ResizeHandler {
              @Override
              public void onResize(ResizeEvent event) {
-                 int width = event.getWidth() - PADDING;
-                 int height = event.getHeight() - PADDING;
+                 if (Gdx.graphics.isFullscreen()) {
+                     return;
+                 }
+
+                 int width =  Window.getClientWidth() - PADDING;
+                 int height = Window.getClientHeight() - PADDING;
                  getRootPanel().setWidth("" + width + "px");
                  getRootPanel().setHeight("" + height + "px");
                  consoleLog("New Size: " + width + "x" + height);

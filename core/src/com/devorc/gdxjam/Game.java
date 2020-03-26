@@ -17,6 +17,9 @@ import com.kotcrab.vis.ui.VisUI;
 
 public class Game extends ApplicationAdapter {
 
+	public static final int DEFAULT_WIDTH = 800;
+	public static final int DEFAULT_HEIGHT = 600;
+
 	private GameRenderer renderer;
 	private UI ui;
 	private World world;
