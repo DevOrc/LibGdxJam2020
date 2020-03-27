@@ -60,8 +60,8 @@ public class Mothership extends Enemy {
     public void render(SpriteBatch batch) {
         super.render(batch);
 
-        float x = this.x - (RADIUS / 2f);
-        float y = this.y - (RADIUS / 2f);
+        float x = this.x - (RADIUS);
+        float y = this.y - (RADIUS);
 
         GameRenderer.drawRotated(batch, texture, x, y, renderAngle);
     }
