@@ -12,12 +12,14 @@ public class InGameUI extends Stack {
 
     private final PausedMenu pausedMenu = new PausedMenu();
     private final RobotUpgradeMenu upgradeMenu = new RobotUpgradeMenu();
+    private final StartGameScreen startGameScreen = new StartGameScreen();
 
     private final Game game = (Game) Gdx.app.getApplicationListener();
 
     public InGameUI() {
         add(upgradeMenu);
         add(pausedMenu);
+        add(startGameScreen);
     }
 
     @Override
@@ -34,7 +36,7 @@ public class InGameUI extends Stack {
         super.act(delta);
 
         upgradeMenu.setVisible(!game.isPaused());
-        pausedMenu.setVisible(game.isPaused());
+        pausedMenu.setVisible(game.isPaused() && !startGameScreen.isVisible());
         pausedMenu.setPosition(0, 0);
         pausedMenu.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }

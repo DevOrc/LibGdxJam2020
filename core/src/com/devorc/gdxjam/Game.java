@@ -26,6 +26,7 @@ public class Game extends ApplicationAdapter {
 	private World world;
 	private World mainMenuWorld;
 
+	private boolean firstGame = true;
 	private boolean paused = false;
 
 	@Override
@@ -76,7 +77,13 @@ public class Game extends ApplicationAdapter {
 	public void startGame(boolean insane){
 		world = new World(this);
 		ui.setScene(UIScenes.IN_GAME);
-		paused = false;
+
+		if(firstGame){ //Pause for first game because the Start Game Screen will need to show
+			paused = true;
+			firstGame = false;
+		}else{
+			paused = false;
+		}
 
 		if(insane){
 			world.getRobot().getStats().maxAll();

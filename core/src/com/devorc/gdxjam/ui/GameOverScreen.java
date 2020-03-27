@@ -27,6 +27,7 @@ public class GameOverScreen extends Table {
         TextButton restartButton = new VisTextButton("Start Normal", Styles.buttons);
         UI.addClickListener(restartButton, event -> restartGame(false));
         TextButton restartInsaneButton = new VisTextButton("Start Insane", Styles.buttons);
+        restartInsaneButton.addListener(UI.insaneTooltip);
         UI.addClickListener(restartInsaneButton, event -> restartGame(true));
         TextButton mainMenuButton = new VisTextButton("Main Menu", Styles.buttons);
         UI.addClickListener(mainMenuButton, event -> gotoMainMenu());

@@ -2,10 +2,7 @@ package com.devorc.gdxjam.world;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.devorc.gdxjam.entity.AncientTurret;
-import com.devorc.gdxjam.entity.Bomber;
-import com.devorc.gdxjam.entity.Enemy;
-import com.devorc.gdxjam.entity.Mothership;
+import com.devorc.gdxjam.entity.*;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -46,6 +43,7 @@ public class EnemyManager {
             enemyCount = 2 + (wave / 2) + (Math.floorDiv(wave, 5) * 3);
 
             if(wave % 5 == 0){
+                Powerups.spawnRandom(world);
                 world.addEntity(new Mothership(wave));
             }
         }

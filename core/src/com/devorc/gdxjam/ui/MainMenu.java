@@ -57,6 +57,7 @@ public class MainMenu extends Table {
         TextButton startNormal = new VisTextButton("Start Normal Mode", Styles.buttons);
         UI.addClickListener(startNormal, event -> startGame(false));
         TextButton startInsane = new VisTextButton("Start Insane Mode", Styles.buttons);
+        startInsane.addListener(UI.insaneTooltip);
         UI.addClickListener(startInsane, event -> startGame(true));
         TextButton backButton = new VisTextButton("Back", Styles.buttons);
         UI.addClickListener(backButton, event -> buttonCell.setActor(mainButtons));

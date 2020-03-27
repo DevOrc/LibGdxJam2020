@@ -4,14 +4,19 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.TextTooltip;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Disableable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.devorc.gdxjam.Game;
+import com.kotcrab.vis.ui.VisUI;
 
 import java.util.function.Consumer;
 
 public class UI {
+
+    public static final TextTooltip insaneTooltip =
+            new TextTooltip("Start at wave 30, with a fully maxed out robot!", VisUI.getSkin());
 
     private final Stage stage = new Stage(new ScreenViewport());
     private final Game game;
@@ -24,6 +29,7 @@ public class UI {
         Gdx.input.setInputProcessor(stage);
 
         setScene(UIScenes.MAIN_MENU);
+        insaneTooltip.setInstant(true);
     }
 
     public void resize(int width, int height){
