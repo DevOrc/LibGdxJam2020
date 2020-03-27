@@ -1,7 +1,6 @@
 package com.devorc.gdxjam.world;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.devorc.gdxjam.Game;
 import com.devorc.gdxjam.Item;
@@ -54,6 +53,11 @@ public class World {
         }
     }
 
+    public void resetTimes(){
+        gameTime = System.currentTimeMillis();
+        enemyManager.setWave(1);
+    }
+
     public void addEntity(Entity entity) {
         entity.setWorld(this);
         entities.add(entity);
@@ -81,16 +85,8 @@ public class World {
 
         robot.update();
 
-        if(robot.isDead() || Gdx.input.isKeyPressed(Input.Keys.K)) {
+        if(robot.isDead()) {
             endGame();
-        }
-
-        if(Gdx.input.isKeyPressed(Input.Keys.P)) {
-            for(Item item : Item.values()) {
-                changeItemAmount(item, 1);
-            }
-
-            Powerups.HEALTH.spawn(this);
         }
     }
 

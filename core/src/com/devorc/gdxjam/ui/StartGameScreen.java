@@ -45,6 +45,7 @@ public class StartGameScreen extends Table {
     private void startGame(InputEvent event) {
         setVisible(false);
         game.setPaused(false);
+        game.getWorld().resetTimes();
     }
 
     @Override

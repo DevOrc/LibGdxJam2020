@@ -1,7 +1,6 @@
 package com.devorc.gdxjam.world;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.devorc.gdxjam.entity.*;
 
 import java.util.LinkedList;
@@ -37,7 +36,7 @@ public class EnemyManager {
             Gdx.app.log("DEBUG", "Spawned Enemy");
         }
 
-        if(nextWaveTime < System.currentTimeMillis() || Gdx.input.isKeyJustPressed(Input.Keys.L)){
+        if(nextWaveTime < System.currentTimeMillis()){
             nextWaveTime += 15000;
             wave++;
             enemyCount = 2 + (wave / 2) + (Math.floorDiv(wave, 5) * 3);
@@ -74,6 +73,7 @@ public class EnemyManager {
     }
 
     public void setWave(int wave) {
+        nextWaveTime = System.currentTimeMillis() + 15000;
         this.wave = wave;
     }
 
