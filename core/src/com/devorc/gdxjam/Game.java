@@ -2,6 +2,7 @@ package com.devorc.gdxjam;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.devorc.gdxjam.entity.Enemy;
 import com.devorc.gdxjam.robot.Robot;
@@ -24,6 +25,8 @@ public class Game extends ApplicationAdapter {
 	private UI ui;
 	private World world;
 	private World mainMenuWorld;
+
+	private boolean paused = false;
 
 	@Override
 	public void create () {
@@ -48,7 +51,8 @@ public class Game extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		if(world != null && ui.getScene() != UIScenes.MAIN_MENU){
-			world.update();
+			if(!paused)
+				world.update();
 			renderer.render();
 		}else if(ui.getScene() == UIScenes.MAIN_MENU){
 			mainMenuWorld.update();
@@ -56,6 +60,11 @@ public class Game extends ApplicationAdapter {
 		}
 
 		ui.render();
+
+		if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
+			paused = !paused;
+			Gdx.app.log("DEBUG", "Paused: " + paused);
+		}
 	}
 
 	@Override
@@ -67,6 +76,7 @@ public class Game extends ApplicationAdapter {
 	public void startGame(boolean insane){
 		world = new World(this);
 		ui.setScene(UIScenes.IN_GAME);
+		paused = false;
 
 		if(insane){
 			world.getRobot().getStats().maxAll();
@@ -91,5 +101,13 @@ public class Game extends ApplicationAdapter {
 
 	public UI getUI() {
 		return ui;
+	}
+
+	public boolean isPaused() {
+		return paused;
+	}
+
+	public void setPaused(boolean paused) {
+		this.paused = paused;
 	}
 }

@@ -63,7 +63,7 @@ public class GameRenderer {
 
         renderGame();
 
-        if(game.getWorld().isGameOver()){
+        if(game.getWorld().isGameOver() || game.isPaused()){
             drawShade();
         }else{
             renderUI();
